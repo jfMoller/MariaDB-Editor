@@ -6,6 +6,10 @@ export const weatherRoute = {
   id: "ExampleData",
   path: "/",
   element: <Outlet />,
-  loader: async () => exampleAPI.getExampleData(),
+  loader: async () => {
+  const exampleData = await exampleAPI.getExampleData();
+  const tables = await exampleAPI.getTableNames();
+  return { exampleData, tables };
+  },
   children: [{ index: true, element: <ExamplePage /> }],
 };
