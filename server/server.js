@@ -32,7 +32,7 @@ server.listen(port, () => {
 
 server.get("/example", (req, res) => {
   pool.getConnection().then((conn) => {
-    conn.query("SELECT * FROM objekt")
+    conn.query("SELECT * FROM personer")
       .then((rows) => {
         res.json(rows); // Return the retrieved data as JSON response
       })
@@ -46,12 +46,34 @@ server.get("/example", (req, res) => {
   });
 });
 
+server.post("/tables", (req, res) => {
+  pool.getConnection().then((conn) => {
+    const { data }= req.body;
+
+    conn.query(`SELECT * FROM ${data}`)
+      .then((rows) => {
+        res.json(rows); // Return the retrieved data as JSON response
+      })
+      .catch((err) => {
+        console.error(`Error executing query: ${err}`);
+        res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
+      })
+      .finally(() => {
+        conn.release();
+      });
+  }).catch((err) => {
+    console.error(`Error getting database connection: ${err}`);
+    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
+  });
+});
+
 server.get("/tables", (req, res) => {
   pool.getConnection().then((conn) => {
     conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
       .then((rows) => {
-        const tableNames = rows.map((row) => Object.values(row)[0]);
-        res.json(tableNames); // Return the table names as JSON response
+        const tableTitles = rows.map((row) => Object.values(row)[0]);
+        const databaseTitle = credentials.database;
+        res.json({ databaseTitle, tableTitles });
       })
       .catch((err) => {
         console.error(`Error executing query: ${err}`);
