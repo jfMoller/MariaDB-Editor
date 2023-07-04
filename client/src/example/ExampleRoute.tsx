@@ -3,13 +3,21 @@ import ExamplePage from "./ExamplePage";
 import { exampleAPI } from "../network/exampleAPI";
 
 export const weatherRoute = {
-  id: "ExampleData",
+  id: "startingData",
   path: "/",
   element: <Outlet />,
   loader: async () => {
-  const exampleData = await exampleAPI.getExampleData();
-  const tables = await exampleAPI.getTableNames();
-  return { exampleData, tables };
+    const { databaseTitle, tableTitles } = await exampleAPI.getTableNames();
+    return { databaseTitle, tableTitles };
   },
-  children: [{ index: true, element: <ExamplePage /> }],
+  children: [
+    { index: true, element: <ExamplePage /> },
+    {
+      id: "tableData",
+      element: <ExamplePage />,
+      path: "/:table",
+      //@ts-ignore
+      loader: async ({ params }) => exampleAPI.getTableData(params.table)
+    },
+  ],
 };

@@ -3,7 +3,6 @@ import axios from "axios";
 let baseURL = "http://localhost:8082";
 
 export async function callGet(url: string) {
-  console.log(baseURL + url)
   let result = await axios.request({
     method: "GET",
     url: baseURL + url,
@@ -15,7 +14,6 @@ export async function callPost(url: string, data: any) {
   let result = await axios.request({
     method: "POST",
     url: baseURL + url,
-    withCredentials: true,
     data: data,
   });
   return result.data;

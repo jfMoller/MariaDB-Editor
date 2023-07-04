@@ -1,6 +1,6 @@
-import { callGet } from "./API";
+import { callGet, callPost } from "./API";
 
 export const exampleAPI = {
-  getExampleData: () => callGet("/example"),
+  getTableData: (tableName: string) => callPost("/tables", { data: tableName }),
   getTableNames: () => callGet("/tables"),
 };

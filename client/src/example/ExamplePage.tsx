@@ -1,46 +1,64 @@
-import { useRouteLoaderData } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 
 export default function ExamplePage() {
-  const data = useRouteLoaderData("ExampleData");
-  const { exampleData, tables } = data;
+  const { databaseTitle, tableTitles } = useRouteLoaderData(
+    "startingData"
+  ) as any;
 
-  const tableNames = tables.map((table) => table);
-  const dataColumns = exampleData.length > 0 ? Object.keys(exampleData[0]) : [];
+  const tableData = useRouteLoaderData("tableData") as any;
+  const tableContent = tableData.length > 0 ? Object.keys(tableData[0]) : [];
+
+  const { table } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      //auto the first table in the database on render
+      navigate(`/${tableTitles[0]}`);
+  }, [tableTitles]);
 
   return (
-    <main className="h-screen w-screen bg-black">
-      <header className="flex items-center justify-between bg-gray-900 py-4 px-6">
-        <h1 className="text-2xl font-bold text-white">homenet 2023</h1>
+    <main className="h-screen w-screen bg-gray-100">
+      <header className="sticky top-0 flex items-center justify-between bg-gray-900 py-4 px-6">
+        <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
         <nav className="flex space-x-4">
-          {tableNames.map((tableName) => (
+          {tableTitles.map((tableTitle) => (
             <a
-              key={tableName}
-              href={`/${tableName}`}
-              className="text-white px-6 py-3 bg-gray-900"
+              key={tableTitle}
+              onClick={() => {
+                navigate(`/${tableTitle}`);
+              }}
+              className="text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
             >
-              {tableName}
+              {tableTitle}
             </a>
           ))}
         </nav>
       </header>
-      <div className="flex flex-col justify-center items-center w-screen h-screen overflow-auto">
-        <div className="max-w-full overflow-x-auto">
-          <table className="w-screen text-white bg-gray-800 rounded-md border border-gray-600 p-10">
-            <thead className="sticky top-0 border border-gray-600">
-              <tr>
-                {dataColumns.map((propertyName) => (
-                  <th key={propertyName} className="px-6 py-3 bg-gray-900">
-                    {propertyName}
+      <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
+        <div className="w-screen overflow-x-auto">
+          <table className="w-full text-gray-800 bg-white rounded-md shadow-md">
+            <thead className="sticky top-0">
+              <tr className="bg-gray-200">
+                {tableContent.map((columnTitle) => (
+                  <th
+                    key={columnTitle}
+                    className="px-6 py-4 text-left font-bold uppercase"
+                  >
+                    {columnTitle}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {exampleData.map((example, index) => (
-                <tr key={index}>
-                  {dataColumns.map((propertyName) => (
-                    <td key={propertyName} className="px-6 py-4">
-                      {example[propertyName]}
+              {tableData.map((columnTitle, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                >
+                  {tableContent.map((dataRow) => (
+                    <td key={dataRow} className="px-6 py-4">
+                      {columnTitle[dataRow]}
                     </td>
                   ))}
                 </tr>
