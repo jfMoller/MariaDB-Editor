@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { weatherRoute } from "./example/ExampleRoute";
+import { weatherRoute } from "./table/TableRoute";
 
 export const routes = [weatherRoute];
 

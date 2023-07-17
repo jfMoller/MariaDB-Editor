@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
+import RowPage from "../row/RowPage";
+import Foldout from "../components/Foldout";
 
 export default function ExamplePage() {
   const { databaseTitle, tableTitles } = useRouteLoaderData(
@@ -9,16 +11,29 @@ export default function ExamplePage() {
   const tableData = useRouteLoaderData("tableData") as any;
   const tableContent = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
-  const { table } = useParams();
+  const { table, rowID } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
       //auto the first table in the database on render
       navigate(`/${tableTitles[0]}`);
-  }, [tableTitles]);
+  }, []);
 
   return (
     <main className="h-screen w-screen bg-gray-100">
+
+      <Foldout
+        title={"Display row"}
+        content={
+          rowID ? (
+            <RowPage />
+          ) : null }
+        open={rowID !== undefined}
+        onClose={() => {
+          navigate(`/events/${table}`);
+        }}
+      />
+
       <header className="sticky top-0 flex items-center justify-between bg-gray-900 py-4 px-6">
         <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
         <nav className="flex space-x-4">
@@ -28,7 +43,7 @@ export default function ExamplePage() {
               onClick={() => {
                 navigate(`/${tableTitle}`);
               }}
-              className="text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
+              className="cursor-pointer text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
             >
               {tableTitle}
             </a>
@@ -55,12 +70,15 @@ export default function ExamplePage() {
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
+                  onClick={() => {navigate(`/${table}/${columnTitle.id}`)}}
                 >
+               
                   {tableContent.map((dataRow) => (
                     <td key={dataRow} className="px-6 py-4">
                       {columnTitle[dataRow]}
                     </td>
                   ))}
+           
                 </tr>
               ))}
             </tbody>
