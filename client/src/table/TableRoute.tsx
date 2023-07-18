@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
 
-export const weatherRoute = {
+export const tableRoute = {
   id: "startingData",
   path: "/",
   element: <Outlet />,
@@ -24,7 +24,7 @@ export const weatherRoute = {
       element: <TablePage />,
       path: "/:table/:rowID",
       //@ts-ignore
-      loader: async ({ params }) => tableAPI.getTableData(params.rowData)
+      loader: async ({ params }) => tableAPI.getRowData(params.table, params.rowID)
     },
   ],
 };
