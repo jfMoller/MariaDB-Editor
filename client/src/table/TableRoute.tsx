@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
+import RowPage from "../row/RowPage";
 
 export const tableRoute = {
   id: "startingData",
@@ -17,14 +18,17 @@ export const tableRoute = {
       element: <TablePage />,
       path: "/:table",
       //@ts-ignore
-      loader: async ({ params }) => tableAPI.getTableData(params.table)
-    },
-    {
-      id: "rowData",
-      element: <TablePage />,
-      path: "/:table/:rowID",
-      //@ts-ignore
-      loader: async ({ params }) => tableAPI.getRowData(params.table, params.rowID)
+      loader: async ({ params }) => await tableAPI.getTableData(params.table),
+      children: [
+        {
+          id: "rowData",
+          element: <RowPage />,
+          path: "/:table/:rowID",
+          //@ts-ignore
+          loader: async ({ params }) =>
+            tableAPI.getRowData(params.table, params.rowID),
+        },
+      ],
     },
   ],
 };

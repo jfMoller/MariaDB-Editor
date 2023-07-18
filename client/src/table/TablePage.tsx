@@ -12,24 +12,20 @@ export default function TablePage() {
   ) as any;
 
   useEffect(() => {
-    navigate(`/${tableTitles[0]}`);
+    !table ? navigate(`/${tableTitles[0]}`) : null;
   }, []);
 
   const tableData = useRouteLoaderData("tableData") as any;
   const tableContent = tableData ? Object.keys(tableData[0]) : [];
 
-  const rowData = useRouteLoaderData("rowData") as any;
-  console.log(rowData)
-
-  if (tableData) {
     return (
       <main className="h-screen w-screen bg-gray-100">
         <Foldout
-          title={"Display row"}
+          title={"Row Data"}
           content={rowID ? <RowPage /> : null}
           open={rowID !== undefined}
           onClose={() => {
-            navigate(`/events/${table}`);
+            navigate(`/${table}`);
           }}
         />
 
@@ -87,4 +83,4 @@ export default function TablePage() {
       </main>
     );
   }
-}
+

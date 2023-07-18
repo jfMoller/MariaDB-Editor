@@ -24,9 +24,9 @@ export default function Foldout(props: {
           >
             <div className="pointer-events-auto w-screen max-w-md">
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                <div className="bg-brown-900 py-6 px-4 sm:px-6">
+                <div className="bg-gray-900 py-6 px-4 sm:px-6">
                   <div className="flex items-start justify-between">
-                    <div className="text-xl border-2 border-brown-900 border-b-red-100 text-green-100">
+                    <div className="text-xl text-white">
                       {props.title}
                     </div>
 
@@ -37,7 +37,7 @@ export default function Foldout(props: {
                         onClick={() => props.onClose()}
                       >
                         <span className="sr-only">Close panel</span>
-                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                       </button>
                     </div>
                   </div>

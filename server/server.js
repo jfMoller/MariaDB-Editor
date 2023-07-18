@@ -74,8 +74,8 @@ server.post("/row", (req, res) => {
     const { data }= req.body;
 
     conn.query(`SELECT * FROM ${data.tableName} WHERE id = ${data.rowID}`)
-      .then((rows) => {
-        res.json(rows);
+      .then((row) => {
+        res.json(row);
       })
       .catch((err) => {
         console.error(`Error executing query: ${err}`);
