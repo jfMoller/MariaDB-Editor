@@ -30,43 +30,6 @@ server.listen(port, () => {
   });
 });
 
-server.get("/example", (req, res) => {
-  pool.getConnection().then((conn) => {
-    conn.query("SELECT * FROM personer")
-      .then((rows) => {
-        res.json(rows); // Return the retrieved data as JSON response
-      })
-      .catch((err) => {
-        console.error(`Error executing query: ${err}`);
-        res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
-      })
-      .finally(() => {
-        conn.release();
-      });
-  });
-});
-
-server.post("/tables", (req, res) => {
-  pool.getConnection().then((conn) => {
-    const { data }= req.body;
-
-    conn.query(`SELECT * FROM ${data}`)
-      .then((rows) => {
-        res.json(rows); // Return the retrieved data as JSON response
-      })
-      .catch((err) => {
-        console.error(`Error executing query: ${err}`);
-        res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
-      })
-      .finally(() => {
-        conn.release();
-      });
-  }).catch((err) => {
-    console.error(`Error getting database connection: ${err}`);
-    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
-  });
-});
-
 server.get("/tables", (req, res) => {
   pool.getConnection().then((conn) => {
     conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
@@ -82,5 +45,47 @@ server.get("/tables", (req, res) => {
       .finally(() => {
         conn.release();
       });
+  });
+});
+
+server.post("/tables", (req, res) => {
+  pool.getConnection().then((conn) => {
+    const { data }= req.body;
+
+    conn.query(`SELECT * FROM ${data}`)
+      .then((rows) => {
+        res.json(rows);
+      })
+      .catch((err) => {
+        console.error(`Error executing query: ${err}`);
+        res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
+      })
+      .finally(() => {
+        conn.release();
+      });
+  }).catch((err) => {
+    console.error(`Error getting database connection: ${err}`);
+    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
+  });
+});
+
+server.post("/row", (req, res) => {
+  pool.getConnection().then((conn) => {
+    const { data }= req.body;
+
+    conn.query(`SELECT * FROM ${data.tableName} WHERE id = ${data.rowID}`)
+      .then((rows) => {
+        res.json(rows);
+      })
+      .catch((err) => {
+        console.error(`Error executing query: ${err}`);
+        res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
+      })
+      .finally(() => {
+        conn.release();
+      });
+  }).catch((err) => {
+    console.error(`Error getting database connection: ${err}`);
+    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
   });
 });
