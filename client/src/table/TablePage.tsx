@@ -33,7 +33,7 @@ export default function TablePage() {
         }}
       />
 
-      <header className="sticky top-0 flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
+      <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
         <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
         <nav className="flex space-x-4">
           {tableTitles.map((tableTitle) => (

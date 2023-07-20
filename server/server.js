@@ -69,17 +69,47 @@ server.post("/tables", (req, res) => {
   });
 });
 
-server.post("/row", (req, res) => {
+server.post("/rows", (req, res) => {
   pool.getConnection().then((conn) => {
     const { data }= req.body;
 
-    conn.query(`SELECT * FROM ${data.tableName} WHERE id = ${data.rowID}`)
+    conn.query(`SELECT * FROM ${data.tableName} WHERE id = ${data.rowID} LIMIT 1`)
       .then((row) => {
-        res.json(row);
+        res.json(row[0]);
       })
       .catch((err) => {
         console.error(`Error executing query: ${err}`);
         res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
+      })
+      .finally(() => {
+        conn.release();
+      });
+  }).catch((err) => {
+    console.error(`Error getting database connection: ${err}`);
+    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
+  });
+});
+
+server.put("/rows/edit", (req, res) => {
+  pool.getConnection().then((conn) => {
+    const { data } = req.body;
+    const { personnr, ...updateData } = data.editedData;
+
+    // Convert the date string to the correct format ('YYYY-MM-DD')
+    const personnrFormatted = new Date(personnr).toISOString().slice(0, 10);
+
+    const updateValues = Object.keys(updateData)
+      .map((col) => `${col} = ${conn.escape(updateData[col])}`)
+      .join(", ");
+
+    // Use the formatted date in the update query
+    conn.query(`UPDATE ${data.tableName} SET personnr = ${conn.escape(personnrFormatted)}, ${updateValues} WHERE id = ${conn.escape(data.editedData.id)}`)
+      .then(() => {
+        res.json({ message: "Row updated successfully." });
+      })
+      .catch((err) => {
+        console.error(`Error executing update query: ${err}`);
+        res.status(500).json({ error: `An error occurred while updating data: ${err}` });
       })
       .finally(() => {
         conn.release();

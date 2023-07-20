@@ -18,7 +18,17 @@ export const tableRoute = {
       element: <TablePage />,
       path: "/:table",
       //@ts-ignore
-      loader: async ({ params }) => await tableAPI.getTableData(params.table),
+      loader: async ({ params }) => tableAPI.getTableData(params.table),
+      //@ts-ignore
+      action: async ({ params, request }) => {
+        const row = Object.fromEntries(await request.formData());
+        if (row.action === "edit-row-data") {
+          const editedData = JSON.parse(row.data)
+          console.log(editedData)
+            return await tableAPI.editRowData(params.table, editedData)
+        }
+        return null;
+      },
       children: [
         {
           id: "rowData",

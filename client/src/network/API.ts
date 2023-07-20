@@ -22,7 +22,7 @@ export async function callPost(url: string, data: any) {
 export async function callPut(url: string, data: any) {
   let result = await axios.request({
     method: 'PUT',
-    url: url,
+    url: baseURL + url,
     data: data,
   });
   return result.data;
@@ -31,7 +31,7 @@ export async function callPut(url: string, data: any) {
 export async function callDelete(url: string, data: any) {
   let result = await axios.request({
     method: 'DELETE',
-    url: url,
+    url: baseURL + url,
     data: data,
   });
   return result.data;
