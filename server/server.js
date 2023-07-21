@@ -93,17 +93,26 @@ server.post("/rows", (req, res) => {
 server.put("/rows/edit", (req, res) => {
   pool.getConnection().then((conn) => {
     const { data } = req.body;
-    const { personnr, ...updateData } = data.editedData;
+    const { ...updateData } = data.editedData;
 
-    // Convert the date string to the correct format ('YYYY-MM-DD')
-    const personnrFormatted = new Date(personnr).toISOString().slice(0, 10);
+   /*  const personnrFormatted = new Date(personnr).toISOString().slice(0, 10); */
 
     const updateValues = Object.keys(updateData)
-      .map((col) => `${col} = ${conn.escape(updateData[col])}`)
+      .map((col) => `${col} = ${parseFormat(updateData[col])}`)
       .join(", ");
 
+    function parseFormat(value) {
+      const regex = /^(\d{4}-\d{2}-\d{2}).*$/;
+      const match = value.toString().match(regex);
+      if (match) {
+        return match[1];
+      } else {
+        return value;
+      }
+    }
+
     // Use the formatted date in the update query
-    conn.query(`UPDATE ${data.tableName} SET personnr = ${conn.escape(personnrFormatted)}, ${updateValues} WHERE id = ${conn.escape(data.editedData.id)}`)
+    conn.query(`UPDATE ${data.tableName} SET ${updateValues} WHERE id = ${data.editedData.id}`)
       .then(() => {
         res.json({ message: "Row updated successfully." });
       })
