@@ -103,6 +103,7 @@ export default function MyComponent() {
           </button>
         </div>
       ) : (
+        <>
         <div className="mt-4 flex justify-end">
           <button
             onClick={handleEdit}
@@ -111,6 +112,15 @@ export default function MyComponent() {
             Edit
           </button>
         </div>
+            <div className="mt-4 flex justify-end">
+            <button
+              onClick={handleEdit}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Edit
+            </button>
+          </div>
+          </>
       )}
     </div>
   );

@@ -95,21 +95,27 @@ server.put("/rows/edit", (req, res) => {
     const { data } = req.body;
     const { ...updateData } = data.editedData;
 
-   /*  const personnrFormatted = new Date(personnr).toISOString().slice(0, 10); */
-
     const updateValues = Object.keys(updateData)
-      .map((col) => `${col} = ${parseFormat(updateData[col])}`)
-      .join(", ");
-
-    function parseFormat(value) {
-      const regex = /^(\d{4}-\d{2}-\d{2}).*$/;
-      const match = value.toString().match(regex);
-      if (match) {
-        return match[1];
-      } else {
-        return value;
-      }
+    .map((col) => `${col} = ${parseFormat(updateData[col])}`)
+    .join(", ");
+  
+  function parseFormat(value) {
+    if (typeof value === 'string') {
+      return `'${formatDate(value)}'`;
+    } else {
+      return formatDate(value);
     }
+  }
+  
+  function formatDate(value) {
+    const regex = /^(\d{4}-\d{2}-\d{2}).*$/;
+    const match = value.toString().match(regex);
+    if (match) {
+      return match[1];
+    } else {
+      return value;
+    }
+  }
 
     // Use the formatted date in the update query
     conn.query(`UPDATE ${data.tableName} SET ${updateValues} WHERE id = ${data.editedData.id}`)
@@ -119,6 +125,32 @@ server.put("/rows/edit", (req, res) => {
       .catch((err) => {
         console.error(`Error executing update query: ${err}`);
         res.status(500).json({ error: `An error occurred while updating data: ${err}` });
+      })
+      .finally(() => {
+        conn.release();
+      });
+  }).catch((err) => {
+    console.error(`Error getting database connection: ${err}`);
+    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
+  });
+});
+
+server.delete("/rows/delete", (req, res) => {
+  pool.getConnection().then((conn) => {
+    const { data } = req.body;
+
+    conn.query(`DELETE FROM ${data.tableName} WHERE id = ${data.rowID} LIMIT 1`)
+      .then((result) => {
+        // Check if a row was deleted (affectedRows > 0)
+        if (result.affectedRows > 0) {
+          res.json({ success: true, message: "Row deleted successfully." });
+        } else {
+          res.json({ success: false, message: "Row not found or not deleted." });
+        }
+      })
+      .catch((err) => {
+        console.error(`Error executing query: ${err}`);
+        res.status(500).json({ error: `An error occurred while deleting data: ${err}` });
       })
       .finally(() => {
         conn.release();
