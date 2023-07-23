@@ -26,7 +26,7 @@ export default function TablePage() {
     <main className="h-screen w-screen bg-gray-100">
       <Foldout
         title={"Row Data"}
-        content={rowID ? <RowPage /> : null}
+        content={rowID ? <RowPage params={{rowID}} /> : null}
         open={rowID !== undefined}
         onClose={() => {
           navigate(`/${table}`);

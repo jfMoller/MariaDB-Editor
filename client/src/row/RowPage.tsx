@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useRouteLoaderData, useSubmit } from "react-router-dom";
 
-export default function MyComponent() {
+interface Props {
+  params: {
+    rowID: string | undefined;
+  };
+}
+
+export default function ({ params: { rowID } }: Props) {
+
   const rowData = useRouteLoaderData("rowData") as any;
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(rowData);
@@ -10,6 +17,16 @@ export default function MyComponent() {
 
   function handleEdit() {
     setIsEditing(true);
+  }
+
+  function handleDelete(rowID: string | undefined) {
+    if (rowID) {
+    let formData = new FormData();
+    formData.append("action", "delete-row-data");
+    formData.append("rowID", rowID);
+    submit(formData, { method: "post" });
+    }
+    else console.error("Error, rowID is undefined");
   }
 
   function handleSave() {
@@ -103,24 +120,24 @@ export default function MyComponent() {
           </button>
         </div>
       ) : (
-        <>
-        <div className="mt-4 flex justify-end">
-          <button
-            onClick={handleEdit}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Edit
-          </button>
-        </div>
-            <div className="mt-4 flex justify-end">
+        <div className="flex flex-row justify-end items-center">
+          <div className="mt-4 flex justify-end">
             <button
               onClick={handleEdit}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
             >
               Edit
             </button>
           </div>
-          </>
+          <div className="mt-4 flex justify-end">
+            <button
+              onClick={() => { handleDelete(rowID)}}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

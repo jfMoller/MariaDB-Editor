@@ -22,17 +22,21 @@ export const tableRoute = {
       //@ts-ignore
       action: async ({ params, request }) => {
         const row = Object.fromEntries(await request.formData());
+
         if (row.action === "edit-row-data") {
           const editedData = JSON.parse(row.data)
-          console.log(editedData)
             return await tableAPI.editRowData(params.table, editedData)
         }
-        return null;
+
+        else if (row.action === "delete-row-data") {
+          return await tableAPI.deleteRowData(params.table, row.rowID);
+        }
+
       },
       children: [
         {
           id: "rowData",
-          element: <RowPage />,
+          element: <TablePage />,
           path: "/:table/:rowID",
           //@ts-ignore
           loader: async ({ params }) =>
