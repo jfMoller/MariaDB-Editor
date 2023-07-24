@@ -1,7 +1,13 @@
-import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
+import {
+  useActionData,
+  useNavigate,
+  useParams,
+  useRouteLoaderData,
+} from "react-router-dom";
 import RowPage from "../row/RowPage";
 import Foldout from "../components/Foldout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ErrorPopup from "../components/ErrorPopup";
 
 export default function TablePage() {
   const { table, rowID } = useParams();
@@ -12,7 +18,7 @@ export default function TablePage() {
   ) as any;
 
   useEffect(() => {
-    !table && !rowID ? navigate(`/${tableTitles[0]}`): null;
+    !table && !rowID ? navigate(`/${tableTitles[0]}`) : null;
   }, []);
 
   const tableData = useRouteLoaderData("tableData") as any;
@@ -22,15 +28,28 @@ export default function TablePage() {
     return null;
   }
 
+  const error: any = useActionData();
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+
+  useEffect(() => {
+    error ? setErrorMessage(true) : setErrorMessage(false);
+  }, []);
+
   return (
     <main className="h-screen w-screen bg-gray-100">
       <Foldout
         title={"Row Data"}
-        content={rowID ? <RowPage params={{rowID}} /> : null}
+        content={rowID ? <RowPage params={{ rowID }} /> : null}
         open={rowID !== undefined}
         onClose={() => {
           navigate(`/${table}`);
         }}
+      />
+
+      <ErrorPopup
+        error={error}
+        isOpen={errorMessage}
+        onClose={() => setErrorMessage(false)}
       />
 
       <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">

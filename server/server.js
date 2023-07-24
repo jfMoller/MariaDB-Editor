@@ -150,13 +150,13 @@ server.delete("/rows/delete", (req, res) => {
       })
       .catch((err) => {
         console.error(`Error executing query: ${err}`);
-        res.status(500).json({ error: `An error occurred while deleting data: ${err}` });
+        res.status(500).json({ success: false, message: `An error occurred while attempting to delete data: ${err.message}` });
       })
       .finally(() => {
         conn.release();
       });
   }).catch((err) => {
     console.error(`Error getting database connection: ${err}`);
-    res.status(500).json({ error: `An error occurred while connecting to the database: ${err}` });
+    res.status(500).json({ success: false, message: `An error occurred while connecting to the database: ${err.message}` });
   });
 });

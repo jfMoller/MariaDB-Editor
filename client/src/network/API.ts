@@ -21,7 +21,7 @@ export async function callPost(url: string, data: any) {
 
 export async function callPut(url: string, data: any) {
   let result = await axios.request({
-    method: 'PUT',
+    method: "PUT",
     url: baseURL + url,
     data: data,
   });
@@ -29,10 +29,17 @@ export async function callPut(url: string, data: any) {
 }
 
 export async function callDelete(url: string, data: any) {
-  let result = await axios.request({
-    method: 'DELETE',
-    url: baseURL + url,
-    data: data,
-  });
-  return result.data;
+  try {
+    let result = await axios.request({
+      method: "DELETE",
+      url: baseURL + url,
+      data: data,
+    });
+    return { data: { title: result.data.message, details: null }, error: null };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: { title: error.message, details: error.response.data.message },
+    };
+  }
 }

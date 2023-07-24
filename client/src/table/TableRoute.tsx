@@ -29,7 +29,12 @@ export const tableRoute = {
         }
 
         else if (row.action === "delete-row-data") {
-          return await tableAPI.deleteRowData(params.table, row.rowID);
+          try {
+            return await tableAPI.deleteRowData(params.table, row.rowID);
+          }
+          catch (error) {
+            return `Failed to delete row: ${error}`;
+          }
         }
 
       },
