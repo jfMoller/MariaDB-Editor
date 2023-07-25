@@ -7,7 +7,7 @@ import {
 import RowPage from "../row/RowPage";
 import Foldout from "../components/Foldout";
 import { useEffect, useState } from "react";
-import ErrorPopup from "../components/ErrorPopup";
+import ActionPopup from "../components/ActionPopup";
 
 export default function TablePage() {
   const { table, rowID } = useParams();
@@ -28,12 +28,21 @@ export default function TablePage() {
     return null;
   }
 
-  const error: any = useActionData();
+  const actionData: any = useActionData();
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<boolean>(false);
+
+  console.log(actionData);
 
   useEffect(() => {
-    error ? setErrorMessage(true) : setErrorMessage(false);
-  }, []);
+    if (actionData?.error) {
+      setErrorMessage(true);
+      setSuccessMessage(false);
+    } else if (actionData?.success) {
+      setSuccessMessage(true);
+      setErrorMessage(false);
+    }
+  }, [actionData]);
 
   return (
     <main className="h-screen w-screen bg-gray-100">
@@ -44,12 +53,6 @@ export default function TablePage() {
         onClose={() => {
           navigate(`/${table}`);
         }}
-      />
-
-      <ErrorPopup
-        error={error}
-        isOpen={errorMessage}
-        onClose={() => setErrorMessage(false)}
       />
 
       <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
@@ -68,6 +71,26 @@ export default function TablePage() {
           ))}
         </nav>
       </header>
+
+      <ActionPopup
+        content={
+          errorMessage
+            ? actionData.error
+            : successMessage
+            ? actionData.success
+            : null
+        }
+        color={errorMessage ? "red" : successMessage ? "green" : null}
+        open={errorMessage || successMessage}
+        onClose={() => {
+          if (errorMessage) {
+            setErrorMessage(false);
+          } else if (successMessage) {
+            setSuccessMessage(false);
+          }
+        }}
+      />
+
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
         <div className="w-screen overflow-x-auto">
           <table className="w-full text-gray-800 bg-white rounded-md shadow-md">

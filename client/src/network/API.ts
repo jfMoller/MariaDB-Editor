@@ -35,11 +35,11 @@ export async function callDelete(url: string, data: any) {
       url: baseURL + url,
       data: data,
     });
-    return { data: { title: result.data.message, details: null }, error: null };
+    return { success: { message: result.data.message, details: null }, error: null };
   } catch (error: any) {
     return {
-      data: null,
-      error: { title: error.message, details: error.response.data.message },
+      success: null,
+      error: { message: error.message, details: error.response.data.message },
     };
   }
 }
