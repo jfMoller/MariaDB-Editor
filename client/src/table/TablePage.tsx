@@ -75,9 +75,9 @@ export default function TablePage() {
       <ActionPopup
         content={
           errorMessage
-            ? actionData.error
+            ? actionData?.error
             : successMessage
-            ? actionData.success
+            ? actionData?.success
             : null
         }
         color={errorMessage ? "red" : successMessage ? "green" : null}

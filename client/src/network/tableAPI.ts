@@ -1,4 +1,4 @@
-import { callDelete, callGet, callPost, callPut } from "./API";
+import { callDelete, callGet, callPost, callPut } from "./calls";
 
 export const tableAPI = {
   getTableNames: () => callGet("/tables"),
