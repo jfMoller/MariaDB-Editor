@@ -108,6 +108,9 @@ server.put("/rows/edit", (req, res) => {
   }
   
   function formatDate(value) {
+    if (value === null) {
+      return value;
+    }
     const regex = /^(\d{4}-\d{2}-\d{2}).*$/;
     const match = value.toString().match(regex);
     if (match) {

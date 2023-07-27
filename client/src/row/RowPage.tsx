@@ -8,7 +8,6 @@ interface Props {
 }
 
 export default function ({ params: { rowID } }: Props) {
-
   const rowData = useRouteLoaderData("rowData") as any;
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(rowData);
@@ -21,18 +20,20 @@ export default function ({ params: { rowID } }: Props) {
 
   function handleDelete(rowID: string | undefined) {
     if (rowID) {
-    let formData = new FormData();
-    formData.append("action", "delete-row-data");
-    formData.append("rowID", rowID);
-    submit(formData, { method: "post" });
+      let formData = new FormData();
+      formData.append("action", "delete-row-data");
+      formData.append("rowID", rowID);
+      submit(formData, { method: "post" });
+    } else {
+      console.error("Error, rowID is undefined");
     }
-    else console.error("Error, rowID is undefined");
   }
 
   function handleSave() {
     let formData = new FormData();
     formData.append("action", "edit-row-data");
     formData.append("data", JSON.stringify(editedData));
+    console.log(formData);
     submit(formData, { method: "post" });
     setIsEditing(false);
   }
@@ -44,14 +45,16 @@ export default function ({ params: { rowID } }: Props) {
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setEditedData((prevData: any) => ({
+    setEditedData((prevData: object) => ({
       ...prevData,
-      [name]: value,
+      [name]: value === "null" || value === "" ? null : value, // Handle "null" input as null value
     }));
   }
 
-  const renderField = (key: string, value: any) => {
-    if (typeof value === "object") {
+  console.log(rowData);
+
+  function renderField(key: string, value: any) {
+    if (typeof value === "object" && value !== null) {
       return (
         <ul className="w-full flex flex-col">
           {Object.entries(value).map(function ([propertyName, propertyValue]) {
@@ -83,7 +86,7 @@ export default function ({ params: { rowID } }: Props) {
             <input
               type="text"
               name={key}
-              value={value}
+              value={value === null ? "null" : value}
               onChange={handleInputChange}
               className="border rounded px-2 py-1"
             />
@@ -93,7 +96,7 @@ export default function ({ params: { rowID } }: Props) {
         </p>
       );
     }
-  };
+  }
 
   return (
     <div>
@@ -131,7 +134,9 @@ export default function ({ params: { rowID } }: Props) {
           </div>
           <div className="mt-4 flex justify-end">
             <button
-              onClick={() => { handleDelete(rowID)}}
+              onClick={() => {
+                handleDelete(rowID);
+              }}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >
               Delete

@@ -7,7 +7,7 @@ export default function (props: {
   open: boolean;
   onClose: MouseEventHandler<HTMLButtonElement>;
 }) {
-  console.log(props.content);
+
   if (props.open) {
     return (
       <div className={"absolute z-10 w-screen py-4 px-6 flex flex-row items-start justify-between " + "bg-" + props.color + "-500" }>

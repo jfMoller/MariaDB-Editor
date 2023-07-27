@@ -32,7 +32,6 @@ export default function TablePage() {
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
 
-  console.log(actionData);
 
   useEffect(() => {
     if (actionData?.error) {
@@ -41,6 +40,9 @@ export default function TablePage() {
     } else if (actionData?.success) {
       setSuccessMessage(true);
       setErrorMessage(false);
+      setTimeout(() => {
+        setSuccessMessage(false);
+      }, 3000)
     }
   }, [actionData]);
 
