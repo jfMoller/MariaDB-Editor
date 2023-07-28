@@ -13,11 +13,13 @@ export default function TablePage() {
   const { table, rowID } = useParams();
   const navigate = useNavigate();
 
+  //returns the db name and the names of its tables
   const { databaseTitle, tableTitles } = useRouteLoaderData(
-    "startingData"
+    "titleData"
   ) as any;
 
   useEffect(() => {
+    //auto-select the first db table on render
     !table && !rowID ? navigate(`/${tableTitles[0]}`) : null;
   }, []);
 
@@ -28,10 +30,10 @@ export default function TablePage() {
     return null;
   }
 
+  //handles visual feedback from actions, e.g saving or deleting data rows
   const actionData: any = useActionData();
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
-
 
   useEffect(() => {
     if (actionData?.error) {
@@ -42,7 +44,7 @@ export default function TablePage() {
       setErrorMessage(false);
       setTimeout(() => {
         setSuccessMessage(false);
-      }, 3000)
+      }, 3000) //ms, removes success-message after this timespan
     }
   }, [actionData]);
 
@@ -60,7 +62,7 @@ export default function TablePage() {
       <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
         <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
         <nav className="flex space-x-4">
-          {tableTitles.map((tableTitle) => (
+          {tableTitles.map((tableTitle: string) => (
             <a
               key={tableTitle}
               onClick={() => {

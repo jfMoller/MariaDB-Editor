@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
-import RowPage from "../row/RowPage";
 
 export const tableRoute = {
-  id: "startingData",
+  id: "titleData",
   path: "/",
   element: <Outlet />,
   loader: async () => {

@@ -33,7 +33,6 @@ export default function ({ params: { rowID } }: Props) {
     let formData = new FormData();
     formData.append("action", "edit-row-data");
     formData.append("data", JSON.stringify(editedData));
-    console.log(formData);
     submit(formData, { method: "post" });
     setIsEditing(false);
   }
@@ -45,13 +44,15 @@ export default function ({ params: { rowID } }: Props) {
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
+    // Exclude "id" property from being updated when in editing mode
+    if (isEditing && name === "id") {
+      return;
+    }
     setEditedData((prevData: object) => ({
       ...prevData,
-      [name]: value === "null" || value === "" ? null : value, // Handle "null" input as null value
+      [name]: value === "null" || value === "" ? null : value,
     }));
   }
-
-  console.log(rowData);
 
   function renderField(key: string, value: any) {
     if (typeof value === "object" && value !== null) {
@@ -66,6 +67,7 @@ export default function ({ params: { rowID } }: Props) {
                   <input
                     type="text"
                     name={`${key}.${propertyName}`}
+                    readOnly={propertyName === "id"}
                     value={propertyValue}
                     onChange={handleInputChange}
                     className="border rounded px-2 py-1"
