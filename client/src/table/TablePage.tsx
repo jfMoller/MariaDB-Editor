@@ -50,14 +50,12 @@ export default function TablePage() {
 
   return (
     <main className="h-screen w-screen bg-gray-100">
+
       <Foldout
         title={"Row Data"}
         content={rowID ? <RowPage params={{ rowID }} /> : null}
         open={rowID !== undefined}
-        onClose={() => {
-          navigate(`/${table}`);
-        }}
-      />
+        onClose={() => navigate(`/${table}`)} />
 
       <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
         <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
@@ -77,30 +75,20 @@ export default function TablePage() {
       </header>
 
       <ActionPopup
-        content={
-          errorMessage
-            ? actionData?.error
-            : successMessage
-            ? actionData?.success
-            : null
-        }
+        content={ errorMessage ? actionData?.error : successMessage ? actionData?.success : null }
         color={errorMessage ? "red" : successMessage ? "green" : null}
         open={errorMessage || successMessage}
         onClose={() => {
-          if (errorMessage) {
-            setErrorMessage(false);
-          } else if (successMessage) {
-            setSuccessMessage(false);
-          }
-        }}
-      />
+          if (errorMessage) setErrorMessage(false);
+          else if (successMessage) setSuccessMessage(false); 
+        }} />
 
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
         <div className="w-screen overflow-x-auto">
           <table className="w-full text-gray-800 bg-white rounded-md shadow-md">
             <thead className="sticky top-0">
               <tr className="bg-gray-200">
-                {tableContent.map((columnTitle) => (
+                {tableContent.map((columnTitle: string) => (
                   <th
                     key={columnTitle}
                     className="px-6 py-4 text-left font-bold uppercase"
@@ -111,7 +99,7 @@ export default function TablePage() {
               </tr>
             </thead>
             <tbody>
-              {tableData.map((columnTitle, index) => (
+              {tableData.map((columnTitle: string, index: number) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
