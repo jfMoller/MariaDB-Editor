@@ -4,18 +4,20 @@ import { tableAPI } from "../network/tableAPI";
 
 export const tableRoute = {
   id: "titleData",
-  path: "/",
+  path: "/:database",
   element: <Outlet />,
   loader: async () => {
     const { databaseTitle, tableTitles } = await tableAPI.getTableNames();
     return { databaseTitle, tableTitles };
   },
   children: [
-    { index: true, element: <TablePage /> },
+    { index: true, 
+      element: <TablePage />,
+    },
     {
       id: "tableData",
       element: <TablePage />,
-      path: "/:table",
+      path: "/:database/:table",
       //@ts-ignore
       loader: async ({ params }) => tableAPI.getTableData(params.table),
       //@ts-ignore
@@ -41,7 +43,7 @@ export const tableRoute = {
         {
           id: "rowData",
           element: <TablePage />,
-          path: "/:table/:rowID",
+          path: "/:database/:table/:rowID",
           //@ts-ignore
           loader: async ({ params }) =>
             tableAPI.getRowData(params.table, params.rowID),

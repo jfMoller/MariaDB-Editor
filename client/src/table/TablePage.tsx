@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import ActionPopup from "../components/ActionPopup";
 
 export default function TablePage() {
-  const { table, rowID } = useParams();
+  const { database, table, rowID } = useParams();
   const navigate = useNavigate();
 
   //returns the db name and the names of its tables
@@ -20,8 +20,8 @@ export default function TablePage() {
 
   useEffect(() => {
     //auto-select the first db table on render
-    !table && !rowID ? navigate(`/${tableTitles[0]}`) : null;
-  }, []);
+    !table && !rowID ? navigate(`/${database}/${tableTitles[0]}`) : null;
+  }, [table, rowID, navigate]);
 
   const tableData = useRouteLoaderData("tableData") as any;
   const tableContent = tableData ? Object.keys(tableData[0]) : [];
@@ -55,7 +55,7 @@ export default function TablePage() {
         title={"Row Data"}
         content={rowID ? <RowPage params={{ rowID }} /> : null}
         open={rowID !== undefined}
-        onClose={() => navigate(`/${table}`)} />
+        onClose={() => navigate(`/${database}/${table}`)} />
 
       <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
         <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
@@ -64,7 +64,7 @@ export default function TablePage() {
             <a
               key={tableTitle}
               onClick={() => {
-                navigate(`/${tableTitle}`);
+                navigate(`/${database}/${tableTitle}`);
               }}
               className="cursor-pointer text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
             >
@@ -104,7 +104,7 @@ export default function TablePage() {
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
                   onClick={() => {
-                    navigate(`/${table}/${columnTitle.id}`);
+                    navigate(`/${database}/${table}/${columnTitle.id}`);
                   }}
                 >
                   {tableContent.map((dataRow) => (

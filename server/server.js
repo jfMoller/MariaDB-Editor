@@ -13,20 +13,29 @@ server.use(function (req, res, next) {
   next();
 });
 
-const pool = mariadb.createPool({
-  host: credentials.host,
-  user: credentials.user,
-  password: credentials.password,
-  database: credentials.database,
-});
+let pool;
 
 server.listen(port, () => {
+  console.log(`Server listening on http://localhost:${port}`);
+});
+
+server.post("/login", (req, res) => {
+  const { data } = req.body;
+
+  pool = mariadb.createPool({
+    host: data.host,
+    user: data.user,
+    password: data.password,
+    database: data.database,
+  });
   pool.getConnection().then((conn) => {
-    console.log(`Connected to MariaDB!`);
-    console.log(`Listening on http://localhost:${port}`);
     conn.release();
+    console.log(`Connected to MariaDB!`);
+    // You can also send a success response here if needed
+    res.json({ success: true, message: "Login successful." });
   }).catch((err) => {
     console.error(`Error connecting to MariaDB: ${err}`);
+    res.status(500).json({ error: "Error connecting to the database. Check your login credentials." });
   });
 });
 
