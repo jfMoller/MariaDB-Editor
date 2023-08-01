@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useActionData, useSubmit } from "react-router-dom";
+import ActionPopup from "../components/ActionPopup";
 
 export default function () {
   const submit = useSubmit();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [host, setHost] = useState<string | null>("localhost");
   const [user, setUser] = useState<string | null>("root");
@@ -10,12 +12,19 @@ export default function () {
   const [database, setDatabase] = useState<string | null>(null);
 
   const actionData: any = useActionData();
-  console.log(actionData)
+  let errorMessage = actionData?.error;
+  let successMessage = actionData?.success;
+
+  useEffect(() => {
+    actionData ? setIsLoading(false) : null;
+  }, [actionData]);
 
   function handleConnect(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (host && user && password && database) {
+      setIsLoading(true); // Set loading state to true when the form is submitted
+
       let formData = new FormData();
       formData.append("action", "connect");
       formData.append("host", host);
@@ -23,7 +32,7 @@ export default function () {
       formData.append("password", password);
       formData.append("database", database);
 
-      submit(formData, { method: "post" });
+      submit(formData, { method: "post" })
     } else {
       console.error("Error, missing credentials");
     }
@@ -36,6 +45,11 @@ export default function () {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <ActionPopup
+              content={errorMessage ? errorMessage : successMessage ? successMessage : null}
+              color={errorMessage ? "red" : successMessage ? "green" : null}
+
+            />
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -106,13 +120,18 @@ export default function () {
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                isLoading ? "cursor-not-allowed opacity-70" : ""
+              }`}
             >
-              Log in
+              {isLoading ? (
+                <div className="animate-spin h-5 w-5 border-t-2 border-b-2 border-white rounded-full"></div>
+              ) : (
+                "Connect"
+              )}
             </button>
           </div>
         </form>

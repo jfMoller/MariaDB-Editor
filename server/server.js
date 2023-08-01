@@ -35,7 +35,7 @@ server.post("/login", (req, res) => {
     res.json({ success: true, message: "Login successful." });
   }).catch((err) => {
     console.error(`Error connecting to MariaDB: ${err}`);
-    res.status(500).json({ error: "Error connecting to the database. Check your login credentials." });
+    res.status(500).json({ message: "Error connecting to the database. Check your login credentials and make sure that the container is running." });
   });
 });
 
