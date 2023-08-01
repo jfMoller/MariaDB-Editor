@@ -1,6 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
 import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
+import { connectionAPI } from "../network/connectionAPI";
 
 export const tableRoute = {
   id: "titleData",
@@ -11,9 +12,7 @@ export const tableRoute = {
     return { databaseTitle, tableTitles };
   },
   children: [
-    { index: true, 
-      element: <TablePage />,
-    },
+    { index: true, element: <TablePage /> },
     {
       id: "tableData",
       element: <TablePage />,
@@ -22,22 +21,21 @@ export const tableRoute = {
       loader: async ({ params }) => tableAPI.getTableData(params.table),
       //@ts-ignore
       action: async ({ params, request }) => {
-        const row = Object.fromEntries(await request.formData());
+        const { action, data, rowID } = Object.fromEntries(await request.formData());
 
-        if (row.action === "edit-row-data") {
-          const editedData = JSON.parse(row.data)
-            return await tableAPI.editRowData(params.table, editedData)
+        if (action === "edit-row-data") {
+          const editedData = JSON.parse(data);
+          return await tableAPI.editRowData(params.table, editedData);
         }
 
-        else if (row.action === "delete-row-data") {
-          try {
-            return await tableAPI.deleteRowData(params.table, row.rowID);
-          }
-          catch (error) {
-            return `Failed to delete row: ${error}`;
-          }
+        if (action === "delete-row-data") {
+          return await tableAPI.deleteRowData(params.table, rowID);
         }
 
+        if (action === "disconnect-from-database") {
+          await connectionAPI.disconnectFromDatabase();
+          return redirect("/");
+        }
       },
       children: [
         {

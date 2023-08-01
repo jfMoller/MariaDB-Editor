@@ -3,23 +3,24 @@ import {
   useNavigate,
   useParams,
   useRouteLoaderData,
+  useSubmit,
 } from "react-router-dom";
 import RowPage from "../row/RowPage";
 import Foldout from "../components/Foldout";
-import { useEffect } from "react";
+
 import ActionPopup from "../components/ActionPopup";
+import { useEffect } from "react";
 
 export default function TablePage() {
   const { database, table, rowID } = useParams();
   const navigate = useNavigate();
+  const submit = useSubmit();
 
-  //returns the db name and the names of its tables
-  const { databaseTitle, tableTitles } = useRouteLoaderData(
-    "titleData"
-  ) as any;
+  // Returns the db name and the names of its tables
+  const { databaseTitle, tableTitles } = useRouteLoaderData("titleData") as any;
 
   useEffect(() => {
-    //auto-select the first db table on render
+    // Auto-select the first db table on render
     !table && !rowID ? navigate(`/${database}/${tableTitles[0]}`) : null;
   }, [table, rowID, navigate]);
 
@@ -30,25 +31,40 @@ export default function TablePage() {
     return null;
   }
 
-  //handles visual feedback from actions, e.g saving or deleting data rows
+  // Handles visual feedback from actions, e.g. saving or deleting data rows
   const actionData: any = useActionData();
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
 
-  return (
-    <main className="h-screen w-screen bg-gray-100">
+  function handleDisconnect() {
+    let formData = new FormData();
+    formData.append("action", "disconnect-from-database");
+    submit(formData, { method: "post" });
+  }
 
+  return (
+    <main className="h-screen w-screen bg-gray-900">
       <Foldout
         title={"Row Data"}
         content={rowID ? <RowPage params={{ rowID }} /> : null}
         open={rowID !== undefined}
-        onClose={() => navigate(`/${database}/${table}`)} />
+        onClose={() => navigate(`/${database}/${table}`)}
+      />
 
-      <header className="flex items-center justify-between bg-gray-900 py-4 px-6 min-h-100 max-h-100">
-        <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
+      <header className="flex items-center justify-between bg-gray-800 py-4 px-6 min-h-100 max-h-100">
+        <div className="flex justify-center items-center">
+          <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
+          <button
+            key={"disconnect"}
+            onClick={handleDisconnect}
+            className="cursor-pointer text-white px-4 py-2 ml-4 rounded-md bg-gray-700 hover:bg-gray-600 focus:bg-gray-700"
+          >
+            Disconnect
+          </button>
+        </div>
         <nav className="flex space-x-4">
           {tableTitles.map((tableTitle: string) => (
-            <a
+            <button
               key={tableTitle}
               onClick={() => {
                 navigate(`/${database}/${tableTitle}`);
@@ -56,15 +72,17 @@ export default function TablePage() {
               className="cursor-pointer text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
             >
               {tableTitle}
-            </a>
+            </button>
           ))}
         </nav>
       </header>
 
       <ActionPopup
-        content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
-        color={ errorMessage ? "red" : successMessage ? "green" : null}
-         />
+        content={
+          errorMessage ? errorMessage : successMessage ? successMessage : null
+        }
+        color={errorMessage ? "red" : successMessage ? "green" : null}
+      />
 
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
         <div className="w-screen overflow-x-auto">
@@ -82,17 +100,17 @@ export default function TablePage() {
               </tr>
             </thead>
             <tbody>
-              {tableData.map((columnTitle: string, index: number) => (
+              {tableData.map((rowData: any, index: number) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-100" : ""}
                   onClick={() => {
-                    navigate(`/${database}/${table}/${columnTitle.id}`);
+                    navigate(`/${database}/${table}/${rowData.id}`);
                   }}
                 >
                   {tableContent.map((dataRow) => (
                     <td key={dataRow} className="px-6 py-4">
-                      {columnTitle[dataRow]}
+                      {rowData[dataRow]}
                     </td>
                   ))}
                 </tr>

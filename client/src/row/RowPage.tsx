@@ -101,7 +101,7 @@ export default function ({ params: { rowID } }: Props) {
   }
 
   return (
-    <div>
+    <div className="p-4 bg-white rounded-md shadow-md">
       <div className="grid grid-cols-1 gap-4">
         {Object.entries(editedData).map(([key, value]) => (
           <div key={key} className="mb-4">
@@ -125,25 +125,21 @@ export default function ({ params: { rowID } }: Props) {
           </button>
         </div>
       ) : (
-        <div className="flex flex-row justify-end items-center">
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={handleEdit}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-            >
-              Edit
-            </button>
-          </div>
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={() => {
-                handleDelete(rowID);
-              }}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Delete
-            </button>
-          </div>
+        <div className="flex flex-row justify-end items-center mt-4">
+          <button
+            onClick={handleEdit}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              handleDelete(rowID);
+            }}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Delete
+          </button>
         </div>
       )}
     </div>

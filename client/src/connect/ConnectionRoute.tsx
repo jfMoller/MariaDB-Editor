@@ -11,19 +11,19 @@ export const connectionRoute = {
       element: <ConnectionPage />,
       //@ts-ignore
       action: async ({ request }) => {
-        const input = Object.fromEntries(await request.formData());
-        if (input.action === "connect") {
+        const { action, host, user, password, database } = Object.fromEntries(await request.formData());
+        if (action === "connect") {
           const connection = await connectionAPI.connectToDatabase(
-            input.host,
-            input.user,
-            input.password,
-            input.database
+            host,
+            user,
+            password,
+            database
           );
 
           if (connection.error) {
             return connection;
           } else if (connection.success) {
-            return redirect(`/${input.database}`);
+            return redirect(`/${database}`);
           }
         }
       },

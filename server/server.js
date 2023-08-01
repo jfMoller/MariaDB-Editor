@@ -1,6 +1,5 @@
 import express from "express";
 import mariadb from "mariadb";
-import { credentials } from "./credentials.js";
 
 const port = 8082;
 const server = express();
@@ -19,7 +18,7 @@ server.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
 });
 
-server.post("/login", (req, res) => {
+server.post("/connect", (req, res) => {
   const { data } = req.body;
 
   pool = mariadb.createPool({
@@ -30,29 +29,55 @@ server.post("/login", (req, res) => {
   });
   pool.getConnection().then((conn) => {
     conn.release();
-    console.log(`Connected to MariaDB!`);
-    // You can also send a success response here if needed
+    console.log(`Connected to MariaDB - (${data.database})`);
     res.json({ success: true, message: "Login successful." });
   }).catch((err) => {
-    console.error(`Error connecting to MariaDB: ${err}`);
-    res.status(500).json({ message: "Error connecting to the database. Check your login credentials and make sure that the container is running." });
+    console.error(`Error connecting to MariaDB - (${data.database}): ${err}`);
+    res.status(500).json({ message: `Error connecting to database ("${data.database}"). Check your login credentials and make sure that the Docker container is running.`});
   });
+});
+
+server.get("/disconnect", (req, res) => {
+  if (pool) {
+    // Close the pool to disconnect from the database
+    pool.end().then(() => {
+      console.log("Disconnected from MariaDB!");
+      res.json({ success: true, message: "Disconnected from the database." });
+    }).catch((err) => {
+      console.error(`Error disconnecting from MariaDB: ${err}`);
+      res.status(500).json({ message: "Error disconnecting from the database." });
+    });
+  } else {
+    // If the pool doesn't exist, respond with an error message
+    console.error("Database connection does not exist.");
+    res.status(500).json({ message: "Database connection does not exist." });
+  }
 });
 
 server.get("/tables", (req, res) => {
   pool.getConnection().then((conn) => {
-    conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
-      .then((rows) => {
-        const tableTitles = rows.map((row) => Object.values(row)[0]);
-        const databaseTitle = credentials.database;
-        res.json({ databaseTitle, tableTitles });
+    // Query to fetch the name of the database
+    conn.query("SELECT DATABASE() AS databaseName")
+      .then((dbResult) => {
+        const databaseTitle = dbResult[0].databaseName;
+
+        // Query to fetch table names
+        conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
+          .then((rows) => {
+            const tableTitles = rows.map((row) => Object.values(row)[0]);
+            res.json({ databaseTitle, tableTitles });
+          })
+          .catch((err) => {
+            console.error(`Error executing query: ${err}`);
+            res.status(500).json({ error: `An error occurred while fetching table names: ${err}` });
+          })
+          .finally(() => {
+            conn.release();
+          });
       })
       .catch((err) => {
         console.error(`Error executing query: ${err}`);
-        res.status(500).json({ error: `An error occurred while fetching table names: ${err}` });
-      })
-      .finally(() => {
-        conn.release();
+        res.status(500).json({ error: `An error occurred while fetching the database name: ${err}` });
       });
   });
 });

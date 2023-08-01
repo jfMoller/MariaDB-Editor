@@ -32,36 +32,25 @@ export default function () {
       formData.append("password", password);
       formData.append("database", database);
 
-      submit(formData, { method: "post" })
+      submit(formData, { method: "post" });
     } else {
       console.error("Error, missing credentials");
     }
-
-    console.log("Host:", host);
-    console.log("User:", user);
-    console.log("Password:", password);
-    console.log("Database:", database);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-          <ActionPopup
-              content={errorMessage ? errorMessage : successMessage ? successMessage : null}
-              color={errorMessage ? "red" : successMessage ? "green" : null}
-
-            />
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Log in to Database Editor
+    <>
+      <ActionPopup
+        content={errorMessage ? errorMessage : successMessage ? successMessage : null}
+        color={errorMessage ? "red" : successMessage ? "green" : null}
+      />
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow">
+          <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
+            MariaDB-UI
           </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleConnect}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <form className="space-y-6">
             <div>
-              <label htmlFor="host" className="sr-only">
-                Host
-              </label>
               <input
                 id="host"
                 name="host"
@@ -69,14 +58,11 @@ export default function () {
                 required
                 value={host || ""}
                 onChange={(e) => setHost(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="mt-1 block w-full px-4 py-2 text-sm text-white placeholder-gray-500 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Host"
               />
             </div>
             <div>
-              <label htmlFor="user" className="sr-only">
-                User
-              </label>
               <input
                 id="user"
                 name="user"
@@ -84,14 +70,11 @@ export default function () {
                 required
                 value={user || ""}
                 onChange={(e) => setUser(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="mt-1 block w-full px-4 py-2 text-sm text-white placeholder-gray-500 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="User"
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
               <input
                 id="password"
                 name="password"
@@ -100,14 +83,11 @@ export default function () {
                 required
                 value={password || ""}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="mt-1 block w-full px-4 py-2 text-sm text-white placeholder-gray-500 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Password"
               />
             </div>
             <div>
-              <label htmlFor="database" className="sr-only">
-                Database
-              </label>
               <input
                 id="database"
                 name="database"
@@ -115,27 +95,29 @@ export default function () {
                 required
                 value={database || ""}
                 onChange={(e) => setDatabase(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="mt-1 block w-full px-4 py-2 text-sm text-white placeholder-gray-500 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Database"
               />
             </div>
-          </div>
-          <div>
-            <button
-              type="submit"
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                isLoading ? "cursor-not-allowed opacity-70" : ""
-              }`}
-            >
-              {isLoading ? (
-                <div className="animate-spin h-5 w-5 border-t-2 border-b-2 border-white rounded-full"></div>
-              ) : (
-                "Connect"
-              )}
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                className={`w-full flex justify-center py-3 px-6 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                  isLoading ? "cursor-not-allowed opacity-70" : ""
+                }`}
+                disabled={isLoading}
+                onClick={handleConnect}
+              >
+                {isLoading ? (
+                  <div className="animate-spin h-5 w-5 border-t-2 border-b-2 border-white rounded-full"></div>
+                ) : (
+                  "Connect"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
