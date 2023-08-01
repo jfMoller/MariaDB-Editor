@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import RowPage from "../row/RowPage";
 import Foldout from "../components/Foldout";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ActionPopup from "../components/ActionPopup";
 
 export default function TablePage() {
@@ -32,21 +32,8 @@ export default function TablePage() {
 
   //handles visual feedback from actions, e.g saving or deleting data rows
   const actionData: any = useActionData();
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (actionData?.error) {
-      setErrorMessage(true);
-      setSuccessMessage(false);
-    } else if (actionData?.success) {
-      setSuccessMessage(true);
-      setErrorMessage(false);
-      setTimeout(() => {
-        setSuccessMessage(false);
-      }, 3000) //ms, removes success-message after this timespan
-    }
-  }, [actionData]);
+  let errorMessage = actionData?.error;
+  let successMessage = actionData?.success;
 
   return (
     <main className="h-screen w-screen bg-gray-100">
@@ -75,13 +62,9 @@ export default function TablePage() {
       </header>
 
       <ActionPopup
-        content={ errorMessage ? actionData?.error : successMessage ? actionData?.success : null }
-        color={errorMessage ? "red" : successMessage ? "green" : null}
-        open={errorMessage || successMessage}
-        onClose={() => {
-          if (errorMessage) setErrorMessage(false);
-          else if (successMessage) setSuccessMessage(false); 
-        }} />
+        content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
+        color={ errorMessage ? "red" : successMessage ? "green" : null}
+         />
 
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
         <div className="w-screen overflow-x-auto">

@@ -47,6 +47,20 @@ export async function callDelete(url: string, data: any) {
   }
 }
 
+export async function callConnect(url: string, data: any) {
+  try {
+    const result = await axios.request({
+      method: "POST",
+      url: baseURL + url,
+      data: data,
+    });
+    return includeActionData(async () => result);
+  }  
+  catch (error: any) {
+    return includeActionData(async () => Promise.reject(error));
+  }
+}
+
 async function includeActionData(method: (...args: any[]) => Promise<any>) {
   try {
     const result = await method();

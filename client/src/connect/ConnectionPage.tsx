@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { useSubmit } from "react-router-dom";
+import { useActionData, useSubmit } from "react-router-dom";
 
-export default function Login() {
+export default function () {
   const submit = useSubmit();
 
-  const [host, setHost] = useState<string | null>(null);
-  const [user, setUser] = useState<string | null>(null);
+  const [host, setHost] = useState<string | null>("localhost");
+  const [user, setUser] = useState<string | null>("root");
   const [password, setPassword] = useState<string | null>(null);
   const [database, setDatabase] = useState<string | null>(null);
 
-  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+  const actionData: any = useActionData();
+  console.log(actionData)
+
+  function handleConnect(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (host && user && password && database) {
       let formData = new FormData();
-      formData.append("action", "login");
+      formData.append("action", "connect");
       formData.append("host", host);
       formData.append("user", user);
       formData.append("password", password);
@@ -39,7 +42,7 @@ export default function Login() {
             Log in to Database Editor
           </h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-8 space-y-6" onSubmit={handleConnect}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="host" className="sr-only">
