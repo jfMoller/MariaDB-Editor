@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -26,9 +25,7 @@ export default function Foldout(props: {
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                 <div className="bg-gray-900 py-6 px-4 sm:px-6">
                   <div className="flex items-start justify-between">
-                    <div className="text-xl text-white">
-                      {props.title}
-                    </div>
+                    <div className="text-xl text-white">{props.title}</div>
 
                     <div className="ml-3 flex h-7 items-center">
                       <button
@@ -37,7 +34,10 @@ export default function Foldout(props: {
                         onClick={() => props.onClose()}
                       >
                         <span className="sr-only">Close panel</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <XMarkIcon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
                   </div>

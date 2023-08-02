@@ -2,7 +2,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 
 export default function ActionPopup(props: {
-  content: { message: string; details: string | null } | null;
+  content: { message: string; details: string | null; } | null;
   color?: string | null;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -14,7 +14,9 @@ export default function ActionPopup(props: {
   if (isOpen && props.content) {
     return (
       <div
-        className={`absolute z-10 w-full py-4 px-6 flex flex-row items-start justify-between bg-${props.color}-500 ${
+        className={`absolute z-10 w-full py-4 px-6 flex flex-row items-start justify-between bg-${
+          props.color
+        }-500 ${
           isOpen ? "opacity-100 h-auto" : "opacity-0 h-0 pointer-events-none"
         } transition-opacity transition-height duration-300 ease-in-out overflow-hidden`}
       >
