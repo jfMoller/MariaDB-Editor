@@ -51,7 +51,7 @@ export default function TablePage() {
         onClose={() => navigate(`/${database}/${table}`)}
       />
 
-      <header className="flex items-center justify-between bg-gray-900 border-b border-b-gray-700 py-4 px-6 min-h-100 max-h-100">
+      <header className="relative flex items-center justify-between bg-gray-900 border-b border-b-gray-700 py-4 px-6 min-h-100 max-h-100">
         <div className="flex justify-center items-center">
           <h1 className="text-2xl font-bold text-white">{capitalizeFirstLetter(databaseTitle)}</h1>
           <button
@@ -78,6 +78,7 @@ export default function TablePage() {
       </header>
 
       <ActionPopup
+        key={errorMessage || successMessage}
         content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
         color={ errorMessage ? "red" : successMessage ? "green" : null }
       />
