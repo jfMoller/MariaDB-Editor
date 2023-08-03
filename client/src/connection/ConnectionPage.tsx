@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useActionData, useSubmit } from "react-router-dom";
 import ActionPopup from "../components/ActionPopup";
 import { ActionData } from "../network/connectionAPI";
-import ConnectionCredentials from "../components/form/ConnectionCredentials";
 import AnimatedSubmitButton from "../components/AnimatedSubmitButton";
+import InputList from "../components/form/InputList";
+import ConnectionPageFrame from "./components/ConnectionPageFrame";
 
 export default function () {
   const submit = useSubmit();
@@ -19,7 +20,7 @@ export default function () {
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
 
-  //handles CSS loading animation on connect button when form is submitted
+  //handles CSS loading animation on button when form is submitted
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -50,30 +51,30 @@ export default function () {
         content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
         color={ errorMessage ? "red" : successMessage ? "green" : null }
       />
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow">
+      <ConnectionPageFrame 
+        children= {
+          <>
+            <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
+              MariaDB-UI
+            </h2>
 
-          <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
-            MariaDB-UI
-          </h2>
-
-          <form className="space-y-6">
-            <ConnectionCredentials
-              inputObjects={[
-                { name: "host", value: host, setState: setHost },
-                { name: "user", value: user, setState: setUser },
-                { name: "password", value: password, setState: setPassword },
-                { name: "database", value: database, setState: setDatabase },
-              ]}
-            />
+            <form className="space-y-6">
+              <InputList
+                inputObjects={[
+                  { name: "host", value: host, setState: setHost },
+                  { name: "user", value: user, setState: setUser },
+                  { name: "password", value: password, setState: setPassword },
+                  { name: "database", value: database, setState: setDatabase },
+                ]}
+              />
             
-            <AnimatedSubmitButton
-              isLoading={isLoading}
-              handleConnect={handleConnect}
-            />
-          </form>
-
-        </div>
-      </div>
+              <AnimatedSubmitButton
+                isLoading={isLoading}
+                handleConnect={handleConnect}
+              />
+           </form>
+           
+          </>
+        } />
     </>
 }

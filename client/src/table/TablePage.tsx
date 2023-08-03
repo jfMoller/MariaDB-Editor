@@ -10,13 +10,13 @@ import Foldout from "../components/Foldout";
 
 import ActionPopup from "../components/ActionPopup";
 import { useEffect } from "react";
+import { capitalizeFirstLetter } from "../utilities/capitalizeFirstLetter";
 
 export default function TablePage() {
   const { database, table, rowID } = useParams();
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  // Returns the db name and the names of its tables
   const { databaseTitle, tableTitles } = useRouteLoaderData("titleData") as any;
 
   useEffect(() => {
@@ -46,14 +46,14 @@ export default function TablePage() {
     <main className="h-screen w-screen bg-gray-900">
       <Foldout
         title={"Row Data"}
-        content={rowID ? <RowPage params={{ rowID }} /> : null}
+        content={rowID ? <RowPage rowID={rowID} /> : null}
         open={rowID !== undefined}
         onClose={() => navigate(`/${database}/${table}`)}
       />
 
-      <header className="flex items-center justify-between bg-gray-800 py-4 px-6 min-h-100 max-h-100">
+      <header className="flex items-center justify-between bg-gray-900 border-b border-b-gray-700 py-4 px-6 min-h-100 max-h-100">
         <div className="flex justify-center items-center">
-          <h1 className="text-2xl font-bold text-white">{databaseTitle}</h1>
+          <h1 className="text-2xl font-bold text-white">{capitalizeFirstLetter(databaseTitle)}</h1>
           <button
             key={"disconnect"}
             onClick={handleDisconnect}
@@ -69,30 +69,28 @@ export default function TablePage() {
               onClick={() => {
                 navigate(`/${database}/${tableTitle}`);
               }}
-              className="cursor-pointer text-white px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 focus:bg-gray-700"
+              className={`px-4 py-2 rounded-md ${table === tableTitle ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-indigo-700 focus:bg-indigo-700`}
             >
-              {tableTitle}
+              {capitalizeFirstLetter(tableTitle)}
             </button>
           ))}
         </nav>
       </header>
 
       <ActionPopup
-        content={
-          errorMessage ? errorMessage : successMessage ? successMessage : null
-        }
-        color={errorMessage ? "red" : successMessage ? "green" : null}
+        content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
+        color={ errorMessage ? "red" : successMessage ? "green" : null }
       />
 
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
         <div className="w-screen overflow-x-auto">
-          <table className="w-full text-gray-800 bg-white rounded-md shadow-md">
+          <table className="w-full text-black bg-gray-100 rounded-md shadow-md">
             <thead className="sticky top-0">
-              <tr className="bg-gray-200">
+              <tr>
                 {tableContent.map((columnTitle: string) => (
                   <th
                     key={columnTitle}
-                    className="px-6 py-4 text-left font-bold uppercase"
+                    className="px-6 py-2 text-left bg-gray-300 font-bold uppercase"
                   >
                     {columnTitle}
                   </th>
@@ -103,7 +101,7 @@ export default function TablePage() {
               {tableData.map((rowData: any, index: number) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                  className={index % 2 === 0 ? "bg-gray-200" : ""}
                   onClick={() => {
                     navigate(`/${database}/${table}/${rowData.id}`);
                   }}

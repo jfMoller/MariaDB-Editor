@@ -3,7 +3,7 @@ import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
 import { connectionAPI } from "../network/connectionAPI";
 
-export const tableRoute = {
+export const tableRoutes = {
   id: "titleData",
   path: "/:database",
   element: <Outlet />,
@@ -43,8 +43,7 @@ export const tableRoute = {
           element: <TablePage />,
           path: "/:database/:table/:rowID",
           //@ts-ignore
-          loader: async ({ params }) =>
-            tableAPI.getRowData(params.table, params.rowID),
+          loader: async ({ params }) => tableAPI.getRowData(params.table, params.rowID),
         },
       ],
     },

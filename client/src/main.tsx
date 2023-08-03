@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { connectionRoute } from "./connect/ConnectionRoute";
-import { tableRoute } from "./table/TableRoute";
+import { connectionRoutes } from "./connection/ConnectionRoutes";
+import { tableRoutes } from "./table/TableRoutes";
 
-export const routes = [connectionRoute, tableRoute];
+export const routes = [connectionRoutes, tableRoutes];
 
 const router = createBrowserRouter(routes);
 

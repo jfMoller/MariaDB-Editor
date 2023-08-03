@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useRouteLoaderData, useSubmit } from "react-router-dom";
+import { capitalizeFirstLetter } from "../utilities/capitalizeFirstLetter";
+import Input from "../components/form/Input";
+import Button from "../components/Button";
 
-interface Props {
-  params: {
-    rowID: string | undefined;
-  };
-}
-
-export default function ({ params: { rowID } }: Props) {
+export default function (props: { rowID: string }) {
+  //returns the data for the selected row
   const rowData = useRouteLoaderData("rowData") as any;
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(rowData);
 
@@ -24,8 +23,6 @@ export default function ({ params: { rowID } }: Props) {
       formData.append("action", "delete-row-data");
       formData.append("rowID", rowID);
       submit(formData, { method: "post" });
-    } else {
-      console.error("Error, rowID is undefined");
     }
   }
 
@@ -44,102 +41,48 @@ export default function ({ params: { rowID } }: Props) {
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    // Exclude "id" property from being updated when in editing mode
-    if (isEditing && name === "id") {
-      return;
-    }
-    setEditedData((prevData: object) => ({
-      ...prevData,
+    setEditedData((originalData: object) => ({
+      ...originalData,
       [name]: value === "null" || value === "" ? null : value,
     }));
   }
 
-  function renderField(key: string, value: any) {
-    if (typeof value === "object" && value !== null) {
-      return (
-        <ul className="w-full flex flex-col">
-          {Object.entries(value).map(function ([propertyName, propertyValue]) {
-            return (
-              <li key={propertyName} className="mb-2">
-                <span className="font-bold">{propertyName}: </span>
-                <br />
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name={`${key}.${propertyName}`}
-                    readOnly={propertyName === "id"}
-                    value={propertyValue}
-                    onChange={handleInputChange}
-                    className="border rounded px-2 py-1"
-                  />
-                ) : (
-                  <span>{propertyValue}</span>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      );
-    } else {
-      return (
-        <p>
-          <span className="font-bold">{key}: </span>
+  function renderRowElements(propertyName: string, value: any) {
+    return (
+      <div className="w-full flex flex-col">
+          <h4 className="font-bold">{capitalizeFirstLetter(propertyName)}: </h4>
           {isEditing ? (
-            <input
-              type="text"
-              name={key}
-              value={value === null ? "null" : value}
-              onChange={handleInputChange}
-              className="border rounded px-2 py-1"
-            />
+            <Input
+            name={propertyName}
+            type={"text"}
+            value={value ? value : "null"}
+            readOnly={propertyName === "id" ? true : false}
+            handleChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+          />
           ) : (
-            value
+            <span>{value ? value : "null"}</span>
           )}
-        </p>
-      );
-    }
+      </div>
+    );
   }
 
   return (
-    <div className="p-4 bg-white rounded-md shadow-md">
-      <div className="grid grid-cols-1 gap-4">
-        {Object.entries(editedData).map(([key, value]) => (
-          <div key={key} className="mb-4">
-            <div className="pl-4">{renderField(key, value)}</div>
+    <div className="p-4 text-white rounded-md border bg-gray-800 border-gray-700">
+        {Object.entries(editedData).map(([propertyName, value]) => (
+          <div className="mb-4">
+            {renderRowElements(propertyName, value)}
           </div>
         ))}
-      </div>
+
       {isEditing ? (
         <div className="mt-4 flex justify-end">
-          <button
-            onClick={handleSave}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            Save
-          </button>
-          <button
-            onClick={handleCancel}
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Cancel
-          </button>
+          <Button text={"Save"} color={"blue"} handleClick={handleSave}/>
+          <Button text={"Cancel"} color={"gray"} handleClick={handleCancel}/>
         </div>
       ) : (
-        <div className="flex flex-row justify-end items-center mt-4">
-          <button
-            onClick={handleEdit}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => {
-              handleDelete(rowID);
-            }}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Delete
-          </button>
+        <div className="mt-4 flex justify-end">
+          <Button text={"Edit"} color={"green"} handleClick={handleEdit}/>
+          <Button text={"Delete"} color={"red"} handleClick={() => handleDelete(props.rowID)}/>
         </div>
       )}
     </div>

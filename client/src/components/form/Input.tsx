@@ -1,9 +1,10 @@
 export default function Input(props: {
   name: string;
   type: string;
-  isRequired: boolean;
   value: string;
-  placeholder: string;
+  isRequired?: boolean;
+  placeholder?: string;
+  readOnly?: boolean;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
@@ -16,6 +17,7 @@ export default function Input(props: {
         value={props.value}
         onChange={props.handleChange}
         placeholder={props.placeholder}
+        readOnly={props.readOnly}
         className="mt-1 block w-full px-4 py-2 text-sm text-white placeholder-gray-500 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
       />
     </>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Dispatch } from "react";
 import Input from "./Input";
+import { capitalizeFirstLetter } from "../../utilities/capitalizeFirstLetter";
 
 interface InputObjects {
   name: string;
@@ -8,15 +9,10 @@ interface InputObjects {
   setState: Dispatch<React.SetStateAction<string | null>>;
 }
 
-export default function ConnectionCredentials(props: { inputObjects: InputObjects[]; }) {
-
-  function capitalizeFirstLetter(string: string) {
-    const [firstLetter, ...remainingLetters] = string;
-    return firstLetter.toUpperCase() + remainingLetters.join('');
-  }
+export default function InputList(props: { inputObjects: InputObjects[]; }) {
   
-  function setupInputs(inputData: InputObjects[]) {
-    return inputData.map((object) => (
+  function renderInputElements(objects: InputObjects[]) {
+    return objects.map((object) => (
       <Input
         key={object.name}
         name={object.name}
@@ -31,5 +27,5 @@ export default function ConnectionCredentials(props: { inputObjects: InputObject
     ));
   }
 
-  return <>{setupInputs(props.inputObjects)}</>;
+  return <>{renderInputElements(props.inputObjects)}</>;
 }

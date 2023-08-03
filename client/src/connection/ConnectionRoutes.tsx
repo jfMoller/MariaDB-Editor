@@ -2,7 +2,7 @@ import { Outlet, redirect } from "react-router-dom";
 import { connectionAPI } from "../network/connectionAPI";
 import ConnectionPage from "./ConnectionPage";
 
-export const connectionRoute = {
+export const connectionRoutes = {
   path: "/",
   element: <Outlet />,
   children: [
@@ -11,13 +11,12 @@ export const connectionRoute = {
       element: <ConnectionPage />,
       //@ts-ignore
       action: async ({ request }) => {
-        const { action, host, user, password, database } = Object.fromEntries(await request.formData());
+        const { action, host, user, password, database } = Object.fromEntries(
+          await request.formData()
+        );
         if (action === "connect") {
           const connection = await connectionAPI.connectToDatabase(
-            host,
-            user,
-            password,
-            database
+            host, user, password, database
           );
 
           if (connection.error) {
