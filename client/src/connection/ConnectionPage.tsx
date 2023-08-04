@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useActionData, useSubmit } from "react-router-dom";
+import { useActionData, useNavigate, useSubmit } from "react-router-dom";
 import ActionPopup from "../components/ActionPopup";
 import { ActionData } from "../network/connectionAPI";
+import { useAuthentication } from "../network/AuthenticationProvider";
 import AnimatedSubmitButton from "../components/AnimatedSubmitButton";
 import InputList from "../components/form/InputList";
 import ConnectionPageFrame from "./components/ConnectionPageFrame";
 
 export default function () {
   const submit = useSubmit();
+  const navigate = useNavigate();
 
   //credentials needed for connection to MariaDB, submitted as a form
   const [host, setHost] = useState<string | null>("localhost");
@@ -20,6 +22,15 @@ export default function () {
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
 
+  const { connected } = useAuthentication();
+
+  useEffect(() => {
+    if (actionData?.success && actionData?.slug) {
+      connected();
+      navigate(actionData.slug); // e.g :/myDatabase
+    } 
+  }, [actionData]);
+  
   //handles CSS loading animation on button when form is submitted
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,7 +68,6 @@ export default function () {
             <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
               MariaDB-UI
             </h2>
-
             <form className="space-y-6">
               <InputList
                 inputObjects={[
@@ -73,7 +83,6 @@ export default function () {
                 handleConnect={handleConnect}
               />
            </form>
-           
           </>
         } />
     </>

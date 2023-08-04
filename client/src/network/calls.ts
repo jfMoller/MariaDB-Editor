@@ -46,6 +46,7 @@ async function parseActionData(method: (...args: any[]) => Promise<any>) {
     return {
       success: { message: result.data.message, details: null },
       error: null,
+      slug: result.data.slug
     };
   } catch (error: any) {
     return {

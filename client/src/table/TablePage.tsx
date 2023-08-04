@@ -17,12 +17,11 @@ export default function TablePage() {
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const { databaseTitle, tableTitles } = useRouteLoaderData("titleData") as any;
+  const { databaseTitle, tableTitles, firstTable } = useRouteLoaderData("titleData") as any;
 
   useEffect(() => {
-    // Auto-select the first db table on render
-    !table && !rowID ? navigate(`/${database}/${tableTitles[0]}`) : null;
-  }, [table, rowID, navigate]);
+    navigate(`/${database}/${firstTable}`);
+  }, []);
 
   const tableData = useRouteLoaderData("tableData") as any;
   const tableContent = tableData ? Object.keys(tableData[0]) : [];

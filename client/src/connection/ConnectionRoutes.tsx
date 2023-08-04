@@ -1,4 +1,4 @@
-import { Outlet, redirect } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { connectionAPI } from "../network/connectionAPI";
 import ConnectionPage from "./ConnectionPage";
 
@@ -15,15 +15,9 @@ export const connectionRoutes = {
           await request.formData()
         );
         if (action === "connect") {
-          const connection = await connectionAPI.connectToDatabase(
+          return await connectionAPI.connectToDatabase(
             host, user, password, database
           );
-
-          if (connection.error) {
-            return connection;
-          } else if (connection.success) {
-            return redirect(`/${database}`);
-          }
         }
       },
     },

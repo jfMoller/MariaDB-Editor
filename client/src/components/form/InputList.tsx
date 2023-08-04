@@ -9,8 +9,7 @@ interface InputObjects {
   setState: Dispatch<React.SetStateAction<string | null>>;
 }
 
-export default function InputList(props: { inputObjects: InputObjects[]; }) {
-  
+export default function InputList(props: { inputObjects: InputObjects[] }) {
   function renderInputElements(objects: InputObjects[]) {
     return objects.map((object) => (
       <Input

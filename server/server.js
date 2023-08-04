@@ -30,10 +30,10 @@ server.post("/connect", (req, res) => {
   pool.getConnection().then((conn) => {
     conn.release();
     console.log(`Connected to MariaDB - (${data.database})`);
-    res.json({ success: true, message: "Login successful." });
+    res.json({ success: true, message: "Connection successful.", slug: data.database });
   }).catch((err) => {
     console.error(`Error connecting to MariaDB - (${data.database}): ${err}`);
-    res.status(500).json({ message: `Error connecting to database ("${data.database}"). Check your login credentials and make sure that the Docker container is running.`});
+    res.status(500).json({ message: `Error connecting to database ("${data.database}"). Check your connection credentials and make sure that the Docker container is running.`});
   });
 });
 
@@ -66,7 +66,7 @@ server.get("/tables", (req, res) => {
         conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
           .then((rows) => {
             const tableTitles = rows.map((row) => Object.values(row)[0]);
-            res.json({ databaseTitle, tableTitles });
+            res.json({ databaseTitle, tableTitles, firstTable: tableTitles[0] });
           })
           .catch((err) => {
             console.error(`Error executing query: ${err}`);

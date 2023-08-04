@@ -2,17 +2,23 @@ import { Outlet, redirect } from "react-router-dom";
 import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
 import { connectionAPI } from "../network/connectionAPI";
+import { ProtectedRoute } from "../components/ProtectedRoute";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 export const tableRoutes = {
   id: "titleData",
   path: "/:database",
-  element: <Outlet />,
+  element: (
+  <ProtectedRoute>
+      <Outlet />
+  </ProtectedRoute>
+  ),
   loader: async () => {
-    const { databaseTitle, tableTitles } = await tableAPI.getTableNames();
-    return { databaseTitle, tableTitles };
+    const { databaseTitle, tableTitles, firstTable } = await tableAPI.getTableNames();
+    return { databaseTitle, tableTitles, firstTable };
   },
   children: [
-    { index: true, element: <TablePage /> },
+    { index: true, element: <TablePage />, errorElement: <ErrorBoundary /> },
     {
       id: "tableData",
       element: <TablePage />,

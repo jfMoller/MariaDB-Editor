@@ -35,7 +35,10 @@ export default function ActionPopup(props: {
             onClick={() => setIsOpen(false)}
           >
             <span className="sr-only">Close panel</span>
-            <XMarkIcon className={"h-6 w-6 text-white rounded-md mr-[-0.5rem] " + bg } aria-hidden="true" />
+            <XMarkIcon
+              className={"h-6 w-6 text-white rounded-md mr-[-0.5rem] " + bg}
+              aria-hidden="true"
+            />
           </button>
         </div>
         {props.content.details && (

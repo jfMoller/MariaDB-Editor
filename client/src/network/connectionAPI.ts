@@ -2,7 +2,8 @@ import { callConnect, callGet } from "./calls";
 
 export interface ActionData {
   error: { message: string; details: string | null; } | null ,
-  success: { message: string; details: null; } | null 
+  success: { message: string; details: null; } | null ,
+  slug: string //used to redirect the user when connected
 }
 
 export const connectionAPI = {
