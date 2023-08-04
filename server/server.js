@@ -55,7 +55,8 @@ server.get("/disconnect", (req, res) => {
 });
 
 server.get("/tables", (req, res) => {
-  pool.getConnection().then((conn) => {
+
+  pool?.getConnection().then((conn) => {
     // Query to fetch the name of the database
     conn.query("SELECT DATABASE() AS databaseName")
       .then((dbResult) => {
@@ -83,7 +84,7 @@ server.get("/tables", (req, res) => {
 });
 
 server.post("/tables", (req, res) => {
-  pool.getConnection().then((conn) => {
+  pool?.getConnection().then((conn) => {
     const { data }= req.body;
 
     conn.query(`SELECT * FROM ${data}`)
@@ -104,7 +105,7 @@ server.post("/tables", (req, res) => {
 });
 
 server.post("/rows", (req, res) => {
-  pool.getConnection().then((conn) => {
+  pool?.getConnection().then((conn) => {
     const { data }= req.body;
 
     conn.query(`SELECT * FROM ${data.tableName} WHERE id = ${data.rowID} LIMIT 1`)
@@ -125,7 +126,7 @@ server.post("/rows", (req, res) => {
 });
 
 server.put("/rows/edit", (req, res) => {
-  pool.getConnection().then((conn) => {
+  pool?.getConnection().then((conn) => {
     const { data } = req.body;
     const { ...updateData } = data.editedData;
 
@@ -173,7 +174,7 @@ server.put("/rows/edit", (req, res) => {
 });
 
 server.delete("/rows/delete", (req, res) => {
-  pool.getConnection().then((conn) => {
+  pool?.getConnection().then((conn) => {
     const { data } = req.body;
 
     conn.query(`DELETE FROM ${data.tableName} WHERE id = ${data.rowID} LIMIT 1`)

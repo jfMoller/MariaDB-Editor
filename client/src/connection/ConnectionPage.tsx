@@ -49,7 +49,7 @@ export default function () {
   return <>
       <ActionPopup
         content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
-        color={ errorMessage ? "red" : successMessage ? "green" : null }
+        variant={ errorMessage ? "error" : successMessage ? "success" : null }
       />
       <ConnectionPageFrame 
         children= {

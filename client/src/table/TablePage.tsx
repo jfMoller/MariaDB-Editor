@@ -45,7 +45,7 @@ export default function TablePage() {
   return (
     <main className="h-screen w-screen bg-gray-900">
       <Foldout
-        title={"Row Data"}
+        title={"Modify row Data"}
         content={rowID ? <RowPage rowID={rowID} /> : null}
         open={rowID !== undefined}
         onClose={() => navigate(`/${database}/${table}`)}
@@ -57,7 +57,7 @@ export default function TablePage() {
           <button
             key={"disconnect"}
             onClick={handleDisconnect}
-            className="cursor-pointer text-white px-4 py-2 ml-4 rounded-md bg-gray-700 hover:bg-gray-600 focus:bg-gray-700"
+            className="cursor-pointer text-white px-4 py-2 ml-4 rounded-md border border-gray-300 hover:bg-gray-700"
           >
             Disconnect
           </button>
@@ -69,7 +69,7 @@ export default function TablePage() {
               onClick={() => {
                 navigate(`/${database}/${tableTitle}`);
               }}
-              className={`px-4 py-2 rounded-md ${table === tableTitle ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-indigo-700 focus:bg-indigo-700`}
+              className={`px-4 py-2 rounded-md text-white bg-gray-700 hover:bg-gray-600 ${table === tableTitle ? 'border border-gray-400' : 'text-gray-200'}`}
             >
               {capitalizeFirstLetter(tableTitle)}
             </button>
@@ -78,9 +78,8 @@ export default function TablePage() {
       </header>
 
       <ActionPopup
-        key={errorMessage || successMessage}
         content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
-        color={ errorMessage ? "red" : successMessage ? "green" : null }
+        variant={ errorMessage ? "error" : successMessage ? "success" : null }
       />
 
       <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
