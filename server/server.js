@@ -87,6 +87,16 @@ server.post("/tables", (req, res) => {
   pool?.getConnection().then((conn) => {
     const { data }= req.body;
 
+    conn.query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")
+          .then((rows) => {
+            const tableTitles = rows.map((row) => Object.values(row)[0]);
+            try { tableTitles.includes(req.data)}
+            catch(err) {
+              console.error(`Error fetching ${req.data}: ${err}`);
+              res.status(500).json({ error: `An error occurred while attempting to fetch ${req.data}: ${err}` });
+            }
+          })
+
     conn.query(`SELECT * FROM ${data}`)
       .then((rows) => {
         res.json(rows);

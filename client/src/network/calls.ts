@@ -9,8 +9,12 @@ export async function callGet(url: string) {
 }
 
 export async function callPost(url: string, data: any) {
-  let result = await axiosInstance.post(baseURL + url, data);
-  return result.data;
+  try{
+    let result = await axiosInstance.post(baseURL + url, data); 
+    return result.data;
+  } catch(error) {
+    return error;
+  }
 }
 
 export async function callPut(url: string, data: any) {

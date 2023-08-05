@@ -3,7 +3,6 @@ import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
 import { connectionAPI } from "../network/connectionAPI";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { ErrorBoundary } from "../components/ErrorBoundary";
 
 export const tableRoutes = {
   id: "titleData",
@@ -18,7 +17,7 @@ export const tableRoutes = {
     return { databaseTitle, tableTitles, firstTable };
   },
   children: [
-    { index: true, element: <TablePage />, errorElement: <ErrorBoundary /> },
+    { index: true, element: <TablePage /> },
     {
       id: "tableData",
       element: <TablePage />,
