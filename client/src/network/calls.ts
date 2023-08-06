@@ -4,16 +4,20 @@ import axiosInstance from "axios";
 let baseURL = "http://localhost:8082";
 
 export async function callGet(url: string) {
-  let result = await axiosInstance.get(baseURL + url);
-  return result.data;
+   try {
+    let result = await axiosInstance.get(baseURL + url); 
+    return result.data;
+  } catch {
+    return null;
+  }
 }
 
 export async function callPost(url: string, data: any) {
-  try{
+  try {
     let result = await axiosInstance.post(baseURL + url, data); 
     return result.data;
-  } catch(error) {
-    return error;
+  } catch {
+    return null;
   }
 }
 

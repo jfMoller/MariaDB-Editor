@@ -1,32 +1,38 @@
 import { Outlet, redirect } from "react-router-dom";
-import TablePage from "./TablePage";
 import { tableAPI } from "../network/tableAPI";
 import { connectionAPI } from "../network/connectionAPI";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import TablesPage from "./TablesPage";
 
-export const tableRoutes = {
+export const tablesRoutes = {
   id: "titleData",
   path: "/:database",
   element: (
-  <ProtectedRoute>
+    <ProtectedRoute>
       <Outlet />
-  </ProtectedRoute>
+    </ProtectedRoute>
   ),
   loader: async () => {
-    const { databaseTitle, tableTitles, firstTable } = await tableAPI.getTableNames();
+    const { databaseTitle, tableTitles, firstTable } =
+      await tableAPI.getTableNames();
     return { databaseTitle, tableTitles, firstTable };
   },
   children: [
-    { index: true, element: <TablePage /> },
+    { index: true, element: <TablesPage /> },
     {
       id: "tableData",
-      element: <TablePage />,
+      element: <TablesPage />,
       path: "/:database/:table",
       //@ts-ignore
-      loader: async ({ params }) => tableAPI.getTableData(params.table),
+      loader: async ({ params }) => {
+        const tableData = await tableAPI.getTableData(params.table);
+        return tableData;
+      },
       //@ts-ignore
       action: async ({ params, request }) => {
-        const { action, data, rowID } = Object.fromEntries(await request.formData());
+        const { action, data, rowID } = Object.fromEntries(
+          await request.formData()
+        );
 
         if (action === "edit-row-data") {
           const editedData = JSON.parse(data);
@@ -45,10 +51,11 @@ export const tableRoutes = {
       children: [
         {
           id: "rowData",
-          element: <TablePage />,
+          element: <TablesPage />,
           path: "/:database/:table/:rowID",
           //@ts-ignore
-          loader: async ({ params }) => tableAPI.getRowData(params.table, params.rowID),
+          loader: async ({ params }) =>
+            tableAPI.getRowData(params.table, params.rowID),
         },
       ],
     },
