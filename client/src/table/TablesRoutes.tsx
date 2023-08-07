@@ -30,9 +30,7 @@ export const tablesRoutes = {
       },
       //@ts-ignore
       action: async ({ params, request }) => {
-        const { action, data, rowID } = Object.fromEntries(
-          await request.formData()
-        );
+        const { action, data, rowID } = Object.fromEntries(await request.formData());
 
         if (action === "edit-row-data") {
           const editedData = JSON.parse(data);
@@ -54,8 +52,10 @@ export const tablesRoutes = {
           element: <TablesPage />,
           path: "/:database/:table/:rowID",
           //@ts-ignore
-          loader: async ({ params }) =>
-            tableAPI.getRowData(params.table, params.rowID),
+          loader: async ({ params }) => {
+            const rowData = await tableAPI.getRowData(params.table, params.rowID);
+            return rowData;
+          }
         },
       ],
     },

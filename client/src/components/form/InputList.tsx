@@ -3,14 +3,14 @@ import { Dispatch } from "react";
 import Input from "./Input";
 import { capitalizeFirstLetter } from "../../utilities/capitalizeFirstLetter";
 
-interface InputObjects {
+interface InputObject {
   name: string;
   value: string | null;
   setState: Dispatch<React.SetStateAction<string | null>>;
 }
 
-export default function InputList(props: { inputObjects: InputObjects[] }) {
-  function renderInputElements(objects: InputObjects[]) {
+export default function InputList(props: { inputObjects: InputObject[] }) {
+  function renderInputElements(objects: InputObject[]) {
     return objects.map((object) => (
       <Input
         key={object.name}
