@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouteLoaderData, useSubmit } from "react-router-dom";
-import { capitalizeFirstLetter } from "../utilities/capitalizeFirstLetter";
 import Input from "../components/form/Input";
 import Button from "../components/Button";
 import ConfirmDialogue from "../components/ConfirmDialogue";
@@ -73,7 +72,7 @@ export default function (props: { rowID: string }) {
             onConfirm={() => {handleSave();}}
             onCancel={() => {setConfirmSave(false)}} />
 
-          <h4 className="font-bold">{capitalizeFirstLetter(propertyName)}: </h4>
+          <h4 className="font-bold">{propertyName}: </h4>
           {isEditing ? (
             <Input
               name={propertyName}

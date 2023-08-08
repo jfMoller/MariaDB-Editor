@@ -23,14 +23,14 @@ export default function Foldout(props: {
           >
             <div className="pointer-events-auto w-screen max-w-md">
               <div className="flex h-full flex-col overflow-y-scroll bg-gray-900 shadow-xl">
-                <div className="bg-gray-800 py-5 px-6 border-b border-b-gray-700">
+                <div className="bg-gray-800 py-5 h-[4.66rem] px-6 border-b border-b-gray-700">
                   <div className="flex items-start justify-between">
                     <div className="text-xl text-white">{props.title}</div>
 
                     <div className="ml-3 flex h-7 items-center">
                       <button
                         type="button"
-                        className="rounded-md bg-brown-700 text-grenn-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         onClick={() => props.onClose()}
                       >
                         <span className="sr-only">Close panel</span>

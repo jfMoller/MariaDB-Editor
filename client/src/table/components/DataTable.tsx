@@ -15,7 +15,7 @@ export default function DataTable(props: {
           {props.columnTitles.map((columnTitle: string, index: number) => (
             <th
             key={`trKey${columnTitle}-${index}`}
-              className="px-6 py-2 text-left bg-gray-300 font-bold"
+              className="px-6 py-2 text-left text-white bg-gray-800 font-bold"
             >
               {columnTitle}
             </th>

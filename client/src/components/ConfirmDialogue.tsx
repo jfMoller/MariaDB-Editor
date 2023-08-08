@@ -75,8 +75,8 @@ const colorClass = `bg-${props.color}-600`;
                 </div>
               </div>
               <div className="bg-gray-600 border-t border-gray-500 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <Button text={props.caption} color={props.color} handleClick={props.onConfirm}/>
-              <Button text={"Cancel"} color={"gray"} handleClick={props.onCancel}/>
+              <Button text={props.caption} color={props.color} className={"border border-gray-400"} handleClick={props.onConfirm}/>
+              <Button text={"Cancel"} color={"gray"} className={"border border-gray-400"} handleClick={props.onCancel}/>
               </div>
             </div>
           </Transition.Child>

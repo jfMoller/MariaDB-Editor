@@ -6,11 +6,6 @@ I wanted to build an SQL data editor to increase my understanding of relational 
 ## **Description**
 The project includes an SPA React + TypeScript frontend client where you can view and edit SQL data from MariaDB. Additionally, a Node.js backend was developed to integrate with Docker. By working on this project thus far, I've gained valuable experience in building full-stack applications with relational data, it's also been a lot of fun.
 
-## Upcoming features
-* Creating new data rows in existing tables
-* Creating new tables
-* Assigning table relationships through a visual model
-
 ## **How to run locally**
 
 1.	Clone the project
