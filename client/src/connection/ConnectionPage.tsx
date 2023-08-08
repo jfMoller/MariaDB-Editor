@@ -66,7 +66,7 @@ export default function () {
         children= {
           <>
             <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
-              MariaDB-UI
+              MariaDB-Editor
             </h2>
             <form className="space-y-6">
               <InputList

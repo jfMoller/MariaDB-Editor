@@ -1,5 +1,5 @@
 import { executeQuery } from "../connection.js";
-import { parseValue } from "../utils.js";
+import { parseValue } from "../utilities.js";
 
 
 export async function handleGetRow(req, res) {

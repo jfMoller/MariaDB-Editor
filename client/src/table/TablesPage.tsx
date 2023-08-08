@@ -55,8 +55,8 @@ export default function TablePage() {
           variant={errorMessage ? "error" : successMessage ? "success" : null}
         />
 
-        <div className="flex flex-col justify-center items-center w-full h-full overflow-auto">
-          <div className="w-screen overflow-x-scroll">
+        <div className="bg-gray-200 flex flex-col justify-start items-center w-full h-full overflow-auto">
+          <div className="w-screen flex overflow-x-scroll">
             <DataTable
               tableData={tableData}
               columnTitles={columnTitles}
