@@ -15,9 +15,9 @@ export default function TableHeaderMenu(
         <DisconnectButton />
       </div>
       <nav className="flex space-x-4">
-        {props.tableTitles.map((tableTitle: string) => (
+        {props.tableTitles.map((tableTitle: string, index: number) => (
           <button
-            key={tableTitle}
+          key={`buttonKey${tableTitle}-${index}`}
             onClick={() => {
               navigate(`/${props.databaseSlug}/${tableTitle}`);
             }}

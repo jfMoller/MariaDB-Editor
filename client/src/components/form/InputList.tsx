@@ -11,9 +11,9 @@ interface InputObject {
 
 export default function InputList(props: { inputObjects: InputObject[] }) {
   function renderInputElements(objects: InputObject[]) {
-    return objects.map((object) => (
+    return objects.map((object, index: number) => (
       <Input
-        key={object.name}
+        key={`inputKey:${object.name}-${index}`}
         name={object.name}
         type={object.name === "password" ? "password" : "text"}
         placeholder={capitalizeFirstLetter(object.name)}

@@ -3,14 +3,15 @@ export default function Button(props: {
   color: string;
   handleClick: () => void;
 }) {
-  const bgAndHover = `bg-${props.color}-600 ` + `hover:opacity-90`;
+  const colorClass = `bg-${props.color}-600 ` + `focus-${props.color}-600 `;
 
   return (
     <button
-      onClick={props.handleClick}
-      className={" text-white font-bold py-2 px-4 rounded mr-2 " + bgAndHover}
-    >
-      {props.text}
-    </button>
+    type="button"
+    className={"w-full inline-flex justify-center rounded-md border border-gray-300 hover:border-white shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm " + colorClass}
+    onClick={props.handleClick}
+  >
+    {props.text}
+  </button>
   );
 }
