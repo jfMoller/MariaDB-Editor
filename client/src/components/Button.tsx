@@ -10,7 +10,7 @@ export default function Button(props: {
   return (
     <button
     type="button"
-    className={"w-full inline-flex justify-center rounded-md ml-4 hover:border-white shadow-sm px-4 py-2 text-base font-medium text-white sm:w-auto sm:text-sm " + colorClass + additionalClass}
+    className={"w-full inline-flex justify-center rounded-md sm:ml-4 hover:border-white shadow-sm px-4 py-2 text-base font-medium text-white sm:w-auto sm:text-sm " + colorClass + additionalClass}
     onClick={props.handleClick}
   >
     {props.text}

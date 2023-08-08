@@ -52,8 +52,7 @@ export default function (props: { rowID: string }) {
 
   function renderRowElements(propertyName: string, value: any) {
     return (
-      <div className="w-full flex flex-col">
-        
+      <div className={"w-full flex flex-col flex-wrap"}>
          <ConfirmDialogue
             visible={confirmDelete}
             color="red"
@@ -80,7 +79,7 @@ export default function (props: { rowID: string }) {
               value={value ? value : "null"}
               readOnly={propertyName === "id" ? true : false}
               handleChange={(event: React.ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
-          />
+            />
           ) : (
             <span>{value ? value : "null"}</span>
           )}
@@ -97,13 +96,13 @@ export default function (props: { rowID: string }) {
         ))}
 
       {isEditing ? (
-        <div className="mt-4 flex justify-end">
-          <Button text={"Save"} color={"blue"} handleClick={() => setConfirmSave(true)}/>
+        <div className="mt-4 flex justify-between sm:justify-end">
+          <Button text={"Save"} color={"blue"} className={"mr-4 sm:mr-0"} handleClick={() => setConfirmSave(true)}/>
           <Button text={"Cancel"} color={"gray"} handleClick={handleCancel}/>
         </div>
       ) : (
-        <div className="mt-4 flex justify-end">
-          <Button text={"Edit"} color={"green"} handleClick={handleEdit}/>
+        <div className="mt-4 flex justify-between sm:justify-end">
+          <Button text={"Edit"} color={"green"} className={"mr-4 sm:mr-0"} handleClick={handleEdit}/>
           <Button text={"Delete"} color={"red"} handleClick={() => setConfirmDelete(true)}/>
         </div>
       )}

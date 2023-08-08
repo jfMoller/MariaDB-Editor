@@ -31,7 +31,7 @@ const colorClass = `bg-${props.color}-600`;
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-20 transition-opacity" />
+            <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-5 transition-opacity" />
           </Transition.Child>
 
           <span
@@ -75,7 +75,7 @@ const colorClass = `bg-${props.color}-600`;
                 </div>
               </div>
               <div className="bg-gray-600 border-t border-gray-500 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <Button text={props.caption} color={props.color} className={"border border-gray-400"} handleClick={props.onConfirm}/>
+              <Button text={props.caption} color={props.color} className={"border border-gray-400 mb-3 sm:mb-0"} handleClick={props.onConfirm}/>
               <Button text={"Cancel"} color={"gray"} className={"border border-gray-400"} handleClick={props.onCancel}/>
               </div>
             </div>
