@@ -67,9 +67,9 @@ const colorClass = `bg-${props.color}-600`;
                       {props.caption}
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-50">
+                      <div className="text-sm text-gray-50">
                         {props.description}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>

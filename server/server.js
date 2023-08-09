@@ -1,9 +1,9 @@
 import express from "express";
 import { handleConnect, handleDisconnect } from "./routes/connectionRoutes.js";
-import { handleGetTableAsSQL } from "./routes/queryRoutes.js";
 import { handleGetTitles } from "./routes/titlesRoutes.js";
-import { handleGetTable } from "./routes/tablesRoutes.js";
+import { handleGetTable, handleGetTableAsDDL } from "./routes/tablesRoutes.js";
 import { handleGetRow, handleEditRow, handleDeleteRow } from "./routes/rowsRoutes.js";
+import { handleQuery } from "./routes/queryRoutes.js";
 
 const port = 8082;
 const server = express();
@@ -24,7 +24,8 @@ server.post("/connect", handleConnect);
 server.get("/disconnect", handleDisconnect);
 server.get("/titles", handleGetTitles);
 server.post("/tables", handleGetTable);
-server.post("/query", handleGetTableAsSQL);
+server.post("/tables/ddl", handleGetTableAsDDL);
 server.post("/rows", handleGetRow);
 server.put("/rows", handleEditRow);
 server.delete("/rows", handleDeleteRow);
+server.post("/query", handleQuery);

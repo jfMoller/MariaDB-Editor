@@ -5,6 +5,9 @@ export const tableAPI = {
 
   getTableData: (tableName: string) => callPost("/tables", { data: tableName }),
 
+  getTableAsDDL: (databaseName: string, tableName: string) =>
+  callPost("/tables/ddl", { data: { databaseName: databaseName, tableName: tableName } }),
+
   getRowData: (tableName: string, rowID: string) => callPost("/rows", { data: { tableName, rowID } }),
 
   editRowData: (tableName: string, editedData: object) => callPut("/rows", { data: { tableName, editedData } }),

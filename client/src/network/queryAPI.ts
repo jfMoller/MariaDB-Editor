@@ -1,6 +1,6 @@
-import { callPost } from "./calls";
+import { callQuery } from "./calls";
 
 export const queryAPI = {
-  getTableDDL: (databaseName: string, tableName: string) =>
-    callPost("/query", { data: { databaseName: databaseName, tableName: tableName } }),
+  executeQuery: (query: string) =>
+    callQuery("/query", { data: { query: query } }),
 };

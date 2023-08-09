@@ -1,20 +1,13 @@
 import { executeQuery } from "../connection.js";
 
-export async function handleGetTableAsSQL(req, res) {
+export async function handleQuery(req, res) {
   const { data } = req.body;
-  const query = `SHOW CREATE TABLE ${data.databaseName}.${data.tableName};`;
+  const query = data.query.replace(/\n/g, ''); //remove linebreaks if present
 
   try {
-    const result = await executeQuery(query);
-    
-    if (result.length === 0) {
-      return res.status(404).json({ error: `Table "${data.tableName}" not found.` });
-    }
-
-    const createTableStatement = {tableAsSQL: result[0]['Create Table']};
-    
-    res.send(createTableStatement);
+    await executeQuery(query);
+    res.json({ success: true, message: "Query executed." });
   } catch (err) {
-    res.status(500).json({ error: `An error occurred: ${err.message}` });
+    res.status(500).json({ success: false, message: `An error occurred while attempting to execute a query: ${err.message}` });
   }
 }

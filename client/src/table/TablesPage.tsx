@@ -8,9 +8,10 @@ import RowPage from "../row/RowPage";
 import Foldout from "../components/Foldout";
 
 import ActionPopup from "../components/ActionPopup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TableHeaderMenu from "./components/TableHeaderMenu";
 import DataTable from "./components/DataTable";
+import QueryConsolePage from "../query/QueryConsolePage";
 
 export default function TablePage() {
   const { database, table, rowID } = useParams();
@@ -27,11 +28,14 @@ export default function TablePage() {
   const tableData = useRouteLoaderData("tableData") as any;
   const columnTitles = tableData ? Object.keys(tableData[0]) : [];
 
-  // Handles visual feedback from actions, e.g. saving or deleting data rows
+  //Handles visual feedback from actions, e.g. saving or deleting data rows
   const actionData: any = useActionData();
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
-  let tableAsSQL = actionData?.tableAsSQL;
+
+  //handles tableData when requested as DDL (Data Definition Language)
+  const [showQueryConsole, setShowQueryConsole] = useState<boolean>(false);
+  let tableDDL = actionData?.tableAsDDL;
 
   if (!tableData) return null;
   else
@@ -39,14 +43,24 @@ export default function TablePage() {
       <main className="fixed h-screen w-screen bg-gray-900">
         <Foldout
           title={"Row Data"}
+          maxWidth={"max-w-md"}
           content={rowID ? <RowPage key={`rowKey-${rowID}`} rowID={rowID} /> : null}
           open={rowID !== undefined}
           onClose={() => navigate(`/${database}/${table}`)}
         />
 
+        <Foldout
+          title={"Query Console"}
+          maxWidth={"max-w-2xl"}
+          content={showQueryConsole && tableDDL ? <QueryConsolePage tableDDL={tableDDL} /> : null}
+          open={showQueryConsole && tableDDL != undefined}
+          onClose={() => {setShowQueryConsole(false);}}
+        />
+
         <TableHeaderMenu
           databaseTitle={databaseTitle}
           tableTitles={tableTitles}
+          setShowQueryConsole={setShowQueryConsole}
           databaseSlug={database}
           tableSlug={table}
         />

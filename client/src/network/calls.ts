@@ -33,6 +33,10 @@ export async function callConnect(url: string, data: any) {
   return makeRequestWithActionData("POST", baseURL + url, data);
 }
 
+export async function callQuery(url: string, data: any) {
+  return makeRequestWithActionData("POST", baseURL + url, data);
+}
+
 async function makeRequestWithActionData(
   method: string, url: string, data: any
 ) {

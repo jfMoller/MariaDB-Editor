@@ -31,7 +31,7 @@ export const tablesRoutes = {
       },
       //@ts-ignore
       action: async ({ params, request }) => {
-        const { action, data, rowID } = Object.fromEntries(await request.formData());
+        const { action, data, rowID, query } = Object.fromEntries(await request.formData());
 
         if (action === "edit-row-data") {
           const editedData = JSON.parse(data);
@@ -47,8 +47,12 @@ export const tablesRoutes = {
           return redirect("/");
         }
 
-        if (action === "get-table-as-SQL") {
-          return await queryAPI.getTableDDL(params.database, params.table);
+        if (action === "get-table-as-ddl") {
+          return await tableAPI.getTableAsDDL(params.database, params.table);
+        }
+
+        if (action === "execute-sql-query") {
+          return await queryAPI.executeQuery(query);
         }
       },
       children: [
