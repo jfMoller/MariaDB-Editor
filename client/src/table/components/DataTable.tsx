@@ -14,7 +14,7 @@ export default function DataTable(props: {
         <tr>
           {props.columnTitles.map((columnTitle: string, index: number) => (
             <th
-            key={`trKey${columnTitle}-${index}`}
+              key={`trKey${columnTitle}-${index}`}
               className="px-6 py-2 text-left text-white bg-gray-800 font-bold"
             >
               {columnTitle}
@@ -25,13 +25,10 @@ export default function DataTable(props: {
       <tbody>
         {props.tableData.map((rowData: any, index: number) => (
           <tr
-          key={`trKey${rowData}-${index}`}
+            key={`trKey${rowData}-${index}`}
             className={index % 2 === 0 ? "bg-gray-200" : ""}
-            onClick={() => {
-              navigate(
-                `/${props.databaseSlug}/${props.tableSlug}/${rowData.id}`
-              );
-            }}
+            onClick={() => navigate(`/${props.databaseSlug}/${props.tableSlug}/${rowData.id}`)
+            }
           >
             {props.columnTitles.map((propertyName: string, index: number) => (
               <td key={`tdKey${propertyName}-${index}`} className="px-6 py-4">

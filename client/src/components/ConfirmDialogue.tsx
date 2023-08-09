@@ -12,7 +12,7 @@ export default function ConfirmDialog(props: {
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-const colorClass = `bg-${props.color}-600`;
+  const colorClass = `bg-${props.color}-600`;
 
   return (
     <Transition.Root show={props.visible} as={Fragment}>
@@ -53,7 +53,12 @@ const colorClass = `bg-${props.color}-600`;
             <div className="inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-gray-700 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className={"mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10 " + colorClass}>
+                  <div
+                    className={
+                      "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10 " +
+                      colorClass
+                    }
+                  >
                     <ExclamationTriangleIcon
                       className="h-6 w-6 text-white"
                       aria-hidden="true"
@@ -75,8 +80,18 @@ const colorClass = `bg-${props.color}-600`;
                 </div>
               </div>
               <div className="bg-gray-600 border-t border-gray-500 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <Button text={props.caption} color={props.color} className={"border border-gray-400 mb-3 sm:mb-0"} handleClick={props.onConfirm}/>
-              <Button text={"Cancel"} color={"gray"} className={"border border-gray-400"} handleClick={props.onCancel}/>
+                <Button
+                  text={props.caption}
+                  color={props.color}
+                  className={"border border-gray-400 mb-3 sm:mb-0"}
+                  handleClick={props.onConfirm}
+                />
+                <Button
+                  text={"Cancel"}
+                  color={"gray"}
+                  className={"border border-gray-400"}
+                  handleClick={props.onCancel}
+                />
               </div>
             </div>
           </Transition.Child>

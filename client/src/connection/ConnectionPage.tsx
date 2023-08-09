@@ -62,6 +62,7 @@ export default function () {
         content={ errorMessage ? errorMessage : successMessage ? successMessage : null }
         variant={ errorMessage ? "error" : successMessage ? "success" : null }
       />
+      
       <ConnectionPageFrame 
         children= {
           <>

@@ -9,11 +9,12 @@ export default function Foldout(props: {
   onClose: () => void;
   maxWidth?: string;
 }) {
-
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <div className="relative z-10 overflow-y-auto">
-        <div className={"fixed top-[4.66rem] h-full flex right-0 max-w-full pl-10"}>
+        <div
+          className={"fixed top-[4.66rem] h-full flex right-0 max-w-full pl-10"}
+        >
           <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-500 sm:duration-700"

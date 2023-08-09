@@ -46,7 +46,7 @@ export default function (props: { rowID: string }) {
     const { name, value } = event.target;
     setEditedData((originalData: object) => ({
       ...originalData,
-      [name]: value === "null" || value === "" ? null : value,
+      [name]: value === "null" || value === "" ? null : value, //handles null or empty values
     }));
   }
 
@@ -59,8 +59,8 @@ export default function (props: { rowID: string }) {
             caption="Confirm delete"
             description="Are you sure you want to delete this row?"
             confirmButton="Confirm"
-            onConfirm={() => {handleDelete(props.rowID);}}
-            onCancel={() => {setConfirmDelete(false)}} />
+            onConfirm={() => handleDelete(props.rowID)}
+            onCancel={() => setConfirmDelete(false)} />
 
           <ConfirmDialogue
             visible={confirmSave}
@@ -68,8 +68,8 @@ export default function (props: { rowID: string }) {
             caption="Confirm save"
             description="Are you sure you want to save this row?"
             confirmButton="Confirm"
-            onConfirm={() => {handleSave();}}
-            onCancel={() => {setConfirmSave(false)}} />
+            onConfirm={() => handleSave()}
+            onCancel={() => setConfirmSave(false)} />
 
           <h4 className="font-bold">{propertyName}: </h4>
           {isEditing ? (

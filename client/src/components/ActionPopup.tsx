@@ -1,5 +1,5 @@
-import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import XMarkButton from "./XMarkButton";
 
 export default function ActionPopup(props: {
   content: { message: string; details: string | null } | null;
@@ -21,25 +21,15 @@ export default function ActionPopup(props: {
   if (isOpen && props.content) {
     return (
       <div
-        className={
-          "absolute z-50 shadow-lg px-6 pt-2 pb-2 max-h-max min-w-full bg-gray-800 border border-gray-700"
-        }
+        className={"absolute z-50 shadow-lg px-6 pt-2 pb-2 max-h-max min-w-full bg-gray-800 bg-opacity-95 border border-gray-700"}
       >
         <div className="flex items-center justify-between">
           <h2 className={"font-bold text-white px-2 rounded-md " + bg}>
             {props.content.message}
           </h2>
-          <button
-            type="button"
-            className={"p-2 focus:outline-none "}
-            onClick={() => setIsOpen(false)}
-          >
-            <span className="sr-only">Close panel</span>
-            <XMarkIcon
-              className={"h-6 w-6 text-white rounded-md mr-[-0.5rem] " + bg}
-              aria-hidden="true"
-            />
-          </button>
+          <XMarkButton
+            handleClick={() => setIsOpen(false)} bg={bg}
+          />
         </div>
         {props.content.details && (
           <p className="text-white pb-3">{props.content.details}</p>

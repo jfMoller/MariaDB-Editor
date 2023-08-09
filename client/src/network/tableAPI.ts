@@ -1,9 +1,15 @@
 import { callDelete, callGet, callPost, callPut } from "./calls";
 
+export interface TitleData {
+  databaseTitle: string;
+  tableTitles: string[];
+  firstTable: string;
+}
+
 export const tableAPI = {
   getDatabaseAndTableTitles: () => callGet("/titles"),
 
-  getTableData: (tableName: string) => callPost("/tables", { data: tableName }),
+  getTableData: (tableName: string) => callPost("/tables", { data: { tableName: tableName } }),
 
   getTableAsDDL: (databaseName: string, tableName: string) =>
   callPost("/tables/ddl", { data: { databaseName: databaseName, tableName: tableName } }),

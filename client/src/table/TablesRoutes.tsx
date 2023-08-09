@@ -14,8 +14,7 @@ export const tablesRoutes = {
     </ProtectedRoute>
   ),
   loader: async () => {
-    const { databaseTitle, tableTitles, firstTable } =
-      await tableAPI.getDatabaseAndTableTitles();
+    const { databaseTitle, tableTitles, firstTable } = await tableAPI.getDatabaseAndTableTitles();
     return { databaseTitle, tableTitles, firstTable };
   },
   children: [

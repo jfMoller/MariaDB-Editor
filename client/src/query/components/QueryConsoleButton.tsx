@@ -1,15 +1,17 @@
 import { Dispatch } from "react";
 import { useSubmit } from "react-router-dom";
 
-export default function QueryConsoleButton(props: { showQueryConsole: Dispatch<React.SetStateAction<boolean>>}) {
-    const submit = useSubmit();
+export default function QueryConsoleButton(props: {
+  showQueryConsole: Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const submit = useSubmit();
 
-    function handleQueryData() {
-        let formData = new FormData();
-        formData.append("action", "get-table-as-ddl");
-        submit(formData, { method: "post" });
-        props.showQueryConsole(true);
-      }
+  function handleQueryData() {
+    let formData = new FormData();
+    formData.append("action", "get-table-as-ddl");
+    submit(formData, { method: "post" });
+    props.showQueryConsole(true);
+  }
 
   return (
     <button

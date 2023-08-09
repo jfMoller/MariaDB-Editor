@@ -2,7 +2,7 @@ import { executeQuery } from "../connection.js";
 
 export async function handleGetTable(req, res) {
   const { data } = req.body;
-  const query = `SELECT * FROM ${data}`;
+  const query = `SELECT * FROM ${data.tableName}`;
 
   try {
     const rows = await executeQuery(query);

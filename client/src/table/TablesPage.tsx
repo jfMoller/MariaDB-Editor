@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import TableHeaderMenu from "./components/TableHeaderMenu";
 import DataTable from "./components/DataTable";
 import QueryConsolePage from "../query/QueryConsolePage";
+import { TitleData } from "../network/tableAPI";
 
 export default function TablePage() {
   const { database, table, rowID } = useParams();
@@ -19,7 +20,7 @@ export default function TablePage() {
 
   const { databaseTitle, tableTitles, firstTable } = useRouteLoaderData(
     "titleData"
-  ) as any;
+  ) as TitleData;
 
   useEffect(() => {
     navigate(`/${database}/${firstTable}`);
@@ -33,7 +34,7 @@ export default function TablePage() {
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
 
-  //handles tableData when requested as DDL (Data Definition Language)
+  //handles query console & tableData when requested as DDL (Data Definition Language)
   const [showQueryConsole, setShowQueryConsole] = useState<boolean>(false);
   let tableDDL = actionData?.tableAsDDL;
 
