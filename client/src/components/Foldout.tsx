@@ -10,8 +10,8 @@ export default function Foldout(props: {
 }) {
   return (
     <Transition.Root show={props.open} as={Fragment}>
-      <div className="relative z-10">
-        <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="relative z-10 overflow-y-auto">
+        <div className="fixed top-[4.66rem] h-full right-0 flex max-w-full pl-10">
           <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -22,30 +22,24 @@ export default function Foldout(props: {
             leaveTo="translate-x-full"
           >
             <div className="pointer-events-auto w-screen max-w-md">
-              <div className="flex h-full flex-col overflow-y-scroll bg-gray-900 shadow-xl">
-                <div className="bg-gray-800 py-5 h-[4.66rem] px-6 border-b border-b-gray-700">
-                  <div className="flex items-start justify-between">
-                    <div className="text-xl text-white">{props.title}</div>
-
-                    <div className="ml-3 flex h-7 items-center">
-                      <button
-                        type="button"
-                        className="rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        onClick={() => props.onClose()}
-                      >
-                        <span className="sr-only">Close panel</span>
-                        <XMarkIcon
-                          className="h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-1">
-                    <p className="text-sm text-green-100"></p>
+              <div className="flex h-full flex-col flex-a overflow-y-scroll bg-gray-900 shadow-xl">
+                <div className="sticky top-0 z-200 bg-gray-700 py-4 h-10 rounded-bl-full px-6 border-b border-b-gray-900">
+                  <div className="flex items-center justify-between h-full">
+                    <div className=" text-white font-bold">{props.title}</div>
+                    <button
+                      type="button"
+                      className="rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      onClick={() => props.onClose()}
+                    >
+                      <span className="sr-only">Close panel</span>
+                      <XMarkIcon
+                        className="h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
+                    </button>
                   </div>
                 </div>
-                <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                <div className="my-6 mb-[6.66rem] flex-1 px-4 sm:px-6">
                   {props.content}
                 </div>
               </div>

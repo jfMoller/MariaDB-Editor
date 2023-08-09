@@ -35,10 +35,10 @@ export default function TablePage() {
   if (!tableData) return null;
   else
     return (
-      <main className="relative h-screen w-screen bg-gray-900">
+      <main className="fixed h-screen w-screen bg-gray-900">
         <Foldout
           title={"Row Data"}
-          content={rowID ? <RowPage rowID={rowID} /> : null}
+          content={rowID ? <RowPage key={`rowKey-${rowID}`} rowID={rowID} /> : null}
           open={rowID !== undefined}
           onClose={() => navigate(`/${database}/${table}`)}
         />
@@ -55,7 +55,7 @@ export default function TablePage() {
           variant={errorMessage ? "error" : successMessage ? "success" : null}
         />
 
-        <div className="relative bg-gray-200 flex flex-col justify-start items-center w-full h-full overflow-auto">
+        <div className="bg-gray-200 flex flex-col justify-start items-center w-full h-full overflow-auto">
           <div className="w-screen flex overflow-x-scroll">
             <DataTable
               tableData={tableData}

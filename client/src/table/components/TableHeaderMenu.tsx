@@ -6,15 +6,15 @@ export default function TableHeaderMenu(
   props: { databaseTitle: string; tableTitles: string[], databaseSlug?: string, tableSlug?: string },
 ) {
   const navigate = useNavigate();
-  return (
-    <header className="sticky top-0 flex items-center justify-between bg-gray-900 border-b border-b-gray-700 py-4 px-6 min-h-100 max-h-100">
+  return (<>
+    <header className="sticky top-0 z-100 flex items-center justify-between bg-gray-900 border-b border-b-gray-700 py-4 px-6 min-h-100 max-h-100">
       <div className="flex justify-center items-center">
         <h1 className="text-2xl font-bold text-white">
           {capitalizeFirstLetter(props.databaseTitle)}
         </h1>
         <DisconnectButton />
       </div>
-      <div className="px-4 border-l border-r border-l-gray-600 border-r-gray-600 overflow-x-auto ">
+      <div className="px-4 ml-4 border-l border-r border-l-gray-600 border-r-gray-600 overflow-x-auto ">
         <nav className="flex space-x-4">
           {props.tableTitles.map((tableTitle: string, index: number) => (
             <button
@@ -32,5 +32,5 @@ export default function TableHeaderMenu(
         </nav>
       </div>
     </header>
-  );
+  </>);
 }
