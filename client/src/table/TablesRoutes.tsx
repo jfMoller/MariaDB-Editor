@@ -3,6 +3,7 @@ import { tableAPI } from "../network/tableAPI";
 import { connectionAPI } from "../network/connectionAPI";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import TablesPage from "./TablesPage";
+import { queryAPI } from "../network/queryAPI";
 
 export const tablesRoutes = {
   id: "titleData",
@@ -44,6 +45,10 @@ export const tablesRoutes = {
         if (action === "disconnect-from-database") {
           await connectionAPI.disconnectFromDatabase();
           return redirect("/");
+        }
+
+        if (action === "get-table-as-SQL") {
+          return await queryAPI.getTableDDL(params.database, params.table);
         }
       },
       children: [

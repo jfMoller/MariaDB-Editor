@@ -9,7 +9,7 @@ export default function DataTable(props: {
   const navigate = useNavigate();
 
   return (
-    <table className="w-full h-full text-black bg-gray-100 rounded-md shadow-md">
+    <table className="w-full text-black bg-gray-100 shadow-md">
       <thead className="sticky top-0">
         <tr>
           {props.columnTitles.map((columnTitle: string, index: number) => (

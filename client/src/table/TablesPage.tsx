@@ -31,6 +31,7 @@ export default function TablePage() {
   const actionData: any = useActionData();
   let errorMessage = actionData?.error;
   let successMessage = actionData?.success;
+  let tableAsSQL = actionData?.tableAsSQL;
 
   if (!tableData) return null;
   else
@@ -56,7 +57,7 @@ export default function TablePage() {
         />
 
         <div className="bg-gray-200 flex flex-col justify-start items-center w-full h-full overflow-auto">
-          <div className="w-screen flex overflow-x-scroll">
+          <div className="w-screen overflow-x-scroll pb-[4.66rem]">
             <DataTable
               tableData={tableData}
               columnTitles={columnTitles}
