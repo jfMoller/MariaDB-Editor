@@ -1,7 +1,7 @@
 # **MariaDB-Editor**
 
 ## **Introduction**
-I wanted to build an SQL editor to increase my understanding of relational databases in fullstack development; the end result could be useful as a starting template for building a website with the backend hosted with Docker.
+I wanted to build an SQL editor to increase my understanding of relational databases in fullstack development; the end result could be useful as a starting template for other projects with a Docker-hosted backend.
 
 ## **Description**
 The project includes an SPA React + TypeScript frontend client where you can view and edit SQL data from MariaDB, as well as query the database directly. Additionally, a Node.js backend was developed to integrate with Docker. By working on this project I've gained valuable experience in building full-stack applications with relational data, it's also been a lot of fun.
@@ -38,7 +38,7 @@ cd server
 https://docs.docker.com/get-docker/
 
 ### 2.Pull the official MariaDB image:
-Open a terminal (Command Prompt on Windows or Terminal on macOS) and run the following command:
+Open a terminal and run the following command:
 ```bash
 docker pull mariadb
 ```
