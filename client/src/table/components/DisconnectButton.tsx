@@ -13,7 +13,7 @@ export default function DisconnectButton() {
     <button
       key={"disconnect"}
       onClick={handleDisconnect}
-      className="cursor-pointer text-white px-4 py-2 ml-4 rounded-md border border-gray-300 hover:bg-gray-700"
+      className="cursor-pointer max-h-11 min-h-11 text-white px-4 py-2 ml-4 rounded-md border border-gray-300 hover:bg-gray-700"
     >
       Disconnect
     </button>

@@ -5,10 +5,10 @@ export async function handleGetTable(req, res) {
   const query = `SELECT * FROM ${data.tableName}`;
 
   try {
-    const rows = await executeQuery(query);
-    res.json(rows);
+    const table = await executeQuery(query);
+    res.json(table);
   } catch (err) {
-    res.status(500).json({ error: `An error occurred while fetching data: ${err}` });
+    res.status(500).json({ error: `An error occurred while fetching table data: ${err}` });
   }
 }
 
@@ -22,9 +22,9 @@ export async function handleGetTableAsDDL(req, res) {
       return res.status(404).json({ error: `Table "${data.tableName}" not found.` });
     }
 
-    const ddl = {tableAsDDL: result[0]['Create Table']};
-    res.send(ddl);
+    const tableDDL = {tableAsDDL: result[0]['Create Table']};
+    res.send(tableDDL);
   } catch (err) {
-    res.status(500).json({ error: `An error occurred: ${err.message}` });
+    res.status(500).json({ error: `An error occurred while fetching table DDL data: ${err.message}` });
   }
 }

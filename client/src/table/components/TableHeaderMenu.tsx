@@ -17,9 +17,11 @@ export default function TableHeaderMenu(props: {
         {capitalizeFirstLetter(props.databaseTitle)}
       </h1>
 
-      <DisconnectButton />
+      <div className="flex- flex-grow">
+        <DisconnectButton />
+      </div>
 
-      <div className={"flex flex-row overflow-x-auto"}>
+      <div className={"flex flex-row items-center"}>
         <QueryButton showQueryConsole={props.setShowQueryConsole} />
         <TableNavItems
           tableTitles={props.tableTitles}

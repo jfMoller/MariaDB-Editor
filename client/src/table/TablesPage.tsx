@@ -42,6 +42,7 @@ export default function TablePage() {
   else
     return (
       <main className="fixed h-screen w-screen bg-gray-900">
+  
         <Foldout
           title={"Row Data"}
           maxWidth={"max-w-md"}

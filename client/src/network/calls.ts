@@ -65,7 +65,7 @@ async function parseActionData(method: (...args: any[]) => Promise<any>) {
       success: null,
       error: {
         message: error.message,
-        details: error.response?.data?.message || "Unknown error occurred",
+        details: error.response?.data?.message || "Unknown error occurred.",
       },
     };
   }

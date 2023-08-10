@@ -17,7 +17,7 @@ export default function QueryConsoleButton(props: {
     <button
       key={"query-console"}
       onClick={handleQueryData}
-      className="cursor-pointer whitespace-nowrap text-white px-4 py-2 ml-4 rounded-md border bg-gray-800 border-gray-600 hover:bg-gray-700"
+      className="cursor-pointer flex flex-nowrap max-h-11 min-h-11 whitespace-nowrap text-white px-4 py-2 ml-4 rounded-md border bg-gray-800 border-gray-600 hover:bg-gray-700"
     >
       Query console
     </button>
