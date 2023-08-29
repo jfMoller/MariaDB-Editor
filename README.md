@@ -33,7 +33,7 @@ cd server
 cd server
     npm run dev
 ```
-## **How to do I get started with Docker & MariaDB?**
+## **How do I get started with Docker & MariaDB?**
 ### 1. Download Docker desktop:
 https://docs.docker.com/get-docker/
 
